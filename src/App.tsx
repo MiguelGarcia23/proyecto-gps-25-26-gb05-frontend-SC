@@ -7,7 +7,6 @@ function App() {
 		<Routes>
 			<Route path="auth">
 				<Route path="sign-up" element={<SignUp />} />
-
 			</Route>
 		</Routes>
 	);

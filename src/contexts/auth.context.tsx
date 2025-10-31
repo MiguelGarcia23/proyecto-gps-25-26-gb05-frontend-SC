@@ -7,13 +7,13 @@ import {
 	type ReactNode,
 } from 'react';
 import { supabase } from '../lib/supabase.ts';
-import {useNavigate} from "react-router";
-import {useToast} from "./toast.context.tsx";
+import { useNavigate } from 'react-router';
+import { useToast } from './toast.context.tsx';
 
 interface AuthContextType {
-	user: User | null,
-	session: Session | null,
-	loading: boolean,
+	user: User | null;
+	session: Session | null;
+	loading: boolean;
 	signUp: (
 		firstName: string,
 		lastName: string,
@@ -21,8 +21,8 @@ interface AuthContextType {
 		password: string,
 		username: string,
 		role: 'user' | 'artist',
-	) => Promise<void>,
-	signOut: () => Promise<void>,
+	) => Promise<void>;
+	signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,8 +31,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
 	const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
-    const toast = useToast();
+	const navigate = useNavigate();
+	const toast = useToast();
 
 	useEffect(() => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
@@ -78,8 +78,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			}),
 		});
 
-        toast.showToast('Cuenta creada con éxito', 'success', 5000);
-        navigate('/auth/sign-in');
+		toast.showToast('Cuenta creada con éxito', 'success', 5000);
+		navigate('/auth/sign-in');
 	};
 
 	const signOut = async () => {
@@ -88,9 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	return (
-		<AuthContext.Provider
-			value={{ user, session, loading, signUp, signOut }}
-		>
+		<AuthContext.Provider value={{ user, session, loading, signUp, signOut }}>
 			{children}
 		</AuthContext.Provider>
 	);

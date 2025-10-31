@@ -26,7 +26,6 @@ function SignUp() {
 	const navigate = useNavigate();
 	const auth = useAuth();
 	const toast = useToast();
-    console.log(auth.session);
 
 	const onSubmit: SubmitHandler<SignUpForm> = async (data) => {
 		if (data.password !== data.confirmPassword) {
@@ -43,7 +42,6 @@ function SignUp() {
 				data.role,
 			);
 		} catch (error: any) {
-			console.log(error.message);
 			if (error.message.includes('User already registered')) {
 				return toast.showToast('Correo ya registrado', 'error', 5000);
 			} else {
