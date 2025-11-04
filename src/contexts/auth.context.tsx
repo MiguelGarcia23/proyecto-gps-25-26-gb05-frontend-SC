@@ -83,7 +83,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
-	const signIn = async (email: string, password: string) => {};
+	const signIn = async (email: string, password: string) => {
+		const { error } = await supabase.auth.signInWithPassword({ email, password });
+		if (error) throw error;
+	};
 
 	const signInWithGoogle = async () => {
 		const { error } = await supabase.auth.signInWithOAuth({
