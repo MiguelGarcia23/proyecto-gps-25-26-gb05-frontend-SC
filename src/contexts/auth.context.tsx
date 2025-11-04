@@ -25,6 +25,7 @@ interface AuthContextType {
 	signIn: (email: string, password: string) => Promise<void>;
 	signInWithGoogle: () => Promise<void>;
 	signOut: () => Promise<void>;
+	deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -103,9 +104,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		if (error) throw error;
 	};
 
+	const deleteAccount = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/auth/users`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${session?.access_token}`,
+			},
+		});
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+	};
+
 	return (
 		<AuthContext.Provider
-			value={{ user, session, loading, signUp, signIn, signInWithGoogle, signOut }}
+			value={{
+				user,
+				session,
+				loading,
+				signUp,
+				signIn,
+				signInWithGoogle,
+				signOut,
+				deleteAccount,
+			}}
 		>
 			{children}
 		</AuthContext.Provider>

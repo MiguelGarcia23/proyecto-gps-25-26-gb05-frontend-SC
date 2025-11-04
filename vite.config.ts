@@ -8,7 +8,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api/v1/auth': {
-                target: 'http://localhost:3000',
+                target: 'http://localhost:3100',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api\/v1\/auth/, '')
