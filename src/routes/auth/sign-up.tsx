@@ -41,11 +41,15 @@ function SignUp() {
 				data.username,
 				data.role,
 			);
+
+			toast.showToast('Cuenta creada con éxito', 'success', 5000);
+			navigate('/auth/sign-in');
 		} catch (error: any) {
 			if (error.message.includes('User already registered')) {
 				return toast.showToast('Correo ya registrado', 'error', 5000);
+			} else if (error.message.includes('')) {
 			} else {
-				return toast.showToast('Error en el registro', 'error', 5000);
+				return toast.showToast('Error desconocido', 'error', 5000);
 			}
 		}
 	};
