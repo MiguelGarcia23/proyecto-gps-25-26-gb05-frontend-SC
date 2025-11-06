@@ -1,7 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
 import SignUp from './routes/auth/sign-up.tsx';
-import ChangePasswordForm from './routes/UpdatePassword.tsx';
 
 function App() {
 	return (
