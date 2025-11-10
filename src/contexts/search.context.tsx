@@ -107,7 +107,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 
 		if (orderBy !== '') url.searchParams.append('orderBy', orderBy);
 
-		if(query !== '') url.searchParams.append('query', query);
+		if (query !== '') url.searchParams.append('query', query);
 
 		console.log(url.toString());
 

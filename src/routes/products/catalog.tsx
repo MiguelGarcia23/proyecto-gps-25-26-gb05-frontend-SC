@@ -3,7 +3,10 @@ import SearchProduct from './searchProduct.tsx';
 import { OrderBy } from './orderBy.tsx';
 import { useEffect, useState } from 'react';
 import { type Genre, useGenre } from '../../contexts/genre.context.tsx';
-import { type searchResponse, useSearch } from '../../contexts/search.context.tsx';
+import {
+	type searchResponse,
+	useSearch,
+} from '../../contexts/search.context.tsx';
 import ProductCard from './product.tsx';
 
 function Catalog() {
@@ -11,8 +14,8 @@ function Catalog() {
 	const [generos, setGeneros] = useState<Genre[]>([]);
 	const [precioMin, setPrecioMin] = useState<number>(NaN);
 	const [precioMax, setPrecioMax] = useState<number>(NaN);
-	const [fechaInicio, setFechaInicio] = useState<Date|null>(null);
-	const [fechaFin, setFechaFin] = useState<Date|null>(null);
+	const [fechaInicio, setFechaInicio] = useState<Date | null>(null);
+	const [fechaFin, setFechaFin] = useState<Date | null>(null);
 	const [orderDirection, setOrderDirection] = useState<string>('');
 	const [orderBy, setOrderBy] = useState<string>('');
 	const [result, setResult] = useState<searchResponse>();
@@ -37,7 +40,7 @@ function Catalog() {
 				fechaFin,
 				orderDirection,
 				orderBy,
-				query
+				query,
 			)
 			.then((result) => setResult(result));
 
@@ -50,7 +53,7 @@ function Catalog() {
 		fechaFin,
 		orderDirection,
 		orderBy,
-		query
+		query,
 	]);
 
 	const handleGeneroChange = (genero: string) => {
@@ -75,12 +78,12 @@ function Catalog() {
 		//console.log('Precio maximo cambiado');
 	};
 
-	const handleFechaIniChange = (date: Date|null) => {
+	const handleFechaIniChange = (date: Date | null) => {
 		setFechaInicio(date);
 		//console.log('Date ini cambiado');
 	};
 
-	const handleFechaFinChange = (date: Date|null) => {
+	const handleFechaFinChange = (date: Date | null) => {
 		setFechaFin(date);
 		//console.log('Fecha fin cambiado');
 	};
@@ -97,7 +100,7 @@ function Catalog() {
 
 	const handleQuery = (query: string) => {
 		setQuery(query);
-	}
+	};
 
 	/*const handlePage = (newPage: number) => {
 		setPage(page + newPage)
@@ -115,15 +118,13 @@ function Catalog() {
 				fechaFinOnChange={handleFechaFinChange}
 			/>
 			<div className="flex flex-col gap-2">
-				<SearchProduct
-					queryOnChange={handleQuery}
-				></SearchProduct>
+				<SearchProduct queryOnChange={handleQuery}></SearchProduct>
 				<div className="flex flex-row justify-around">
 					<OrderBy
 						orderBy={handleOrderBy}
 						orderDirection={handleOrderDireccion}
 					></OrderBy>
-					<p>Mostrando { result !== undefined ? result.total : 0 } articulos</p>
+					<p>Mostrando {result !== undefined ? result.total : 0} articulos</p>
 				</div>
 				<div className="flex justify-end pr-15">
 					<div className="join">
@@ -133,9 +134,10 @@ function Catalog() {
 					</div>
 				</div>
 				<div className="card shadow-sm pt-4 flex flex-row w-fit flex-wrap gap-4 p-2">
-					{result !== undefined && result.items.map((item)=>(
-						item !== undefined ? <ProductCard item={item}></ProductCard> : ''
-					))}
+					{result !== undefined &&
+						result.items.map((item) =>
+							item !== undefined ? <ProductCard item={item}></ProductCard> : '',
+						)}
 				</div>
 			</div>
 		</div>

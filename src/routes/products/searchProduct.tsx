@@ -1,12 +1,12 @@
 import React from 'react';
 
 interface searchProductProps {
-	queryOnChange: (query:string) => void;
+	queryOnChange: (query: string) => void;
 }
 
-
-export const SearchProduct:React.FC<searchProductProps> = ({queryOnChange}) => {
-
+export const SearchProduct: React.FC<searchProductProps> = ({
+	queryOnChange,
+}) => {
 	return (
 		<div className="flex flex-row justify-around ">
 			<label className="input">
@@ -26,10 +26,17 @@ export const SearchProduct:React.FC<searchProductProps> = ({queryOnChange}) => {
 						<path d="m21 21-4.3-4.3"></path>
 					</g>
 				</svg>
-				<input type="text" className="grow" placeholder="Busqueda" onBlur={(e) => {queryOnChange(e.target.value)}}/>
+				<input
+					type="text"
+					className="grow"
+					placeholder="Busqueda"
+					onBlur={(e) => {
+						queryOnChange(e.target.value);
+					}}
+				/>
 			</label>
 		</div>
 	);
-}
+};
 
 export default SearchProduct;
