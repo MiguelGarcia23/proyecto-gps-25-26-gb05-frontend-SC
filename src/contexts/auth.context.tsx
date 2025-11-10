@@ -22,7 +22,10 @@ interface AuthContextType {
 		username: string,
 		role: 'user' | 'artist',
 	) => Promise<void>;
+	signIn: (email: string, password: string) => Promise<void>;
+	signInWithGoogle: () => Promise<void>;
 	signOut: () => Promise<void>;
+	deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,8 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
 	const [loading, setLoading] = useState(true);
-	const navigate = useNavigate();
-	const toast = useToast();
 
 	useEffect(() => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
@@ -61,7 +62,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	) => {
 		const { data, error } = await supabase.auth.signUp({ email, password });
 		if (error) throw error;
-		console.log(data);
 
 		const response = await fetch(`${window.location.origin}/api/v1/auth/users`, {
 			method: 'POST',
@@ -78,8 +78,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			}),
 		});
 
-		toast.showToast('Cuenta creada con éxito', 'success', 5000);
-		navigate('/auth/sign-in');
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+	};
+
+	const signIn = async (email: string, password: string) => {
+		const { error } = await supabase.auth.signInWithPassword({ email, password });
+		if (error) throw error;
+	};
+
+	const signInWithGoogle = async () => {
+		const { error } = await supabase.auth.signInWithOAuth({
+			provider: 'google',
+			options: {
+				redirectTo: `${window.location.origin}/api/v1/auth/callback`,
+			},
+		});
+		if (error) throw error;
 	};
 
 	const signOut = async () => {
@@ -87,8 +104,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		if (error) throw error;
 	};
 
+	const deleteAccount = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/auth/users`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${session?.access_token}`,
+			},
+		});
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+	};
+
 	return (
-		<AuthContext.Provider value={{ user, session, loading, signUp, signOut }}>
+		<AuthContext.Provider
+			value={{
+				user,
+				session,
+				loading,
+				signUp,
+				signIn,
+				signInWithGoogle,
+				signOut,
+				deleteAccount,
+			}}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
