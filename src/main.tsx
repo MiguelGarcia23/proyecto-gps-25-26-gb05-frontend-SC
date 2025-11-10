@@ -5,8 +5,8 @@ import { BrowserRouter } from 'react-router';
 import { AuthProvider } from './contexts/auth.context.tsx';
 import { ToastProvider } from './contexts/toast.context.tsx';
 import { UserProvider } from './contexts/user.context.tsx';
-import EditPrivateUserProfile from '../src/routes/UpdatePrivateUser.tsx';
-import EditPublicUserProfile from '../src/routes/UpdatePublicUser.tsx';
+import { GenreProvider } from './contexts/genre.context.tsx';
+import { SearchProvider } from './contexts/search.context.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -14,9 +14,13 @@ createRoot(document.getElementById('root')!).render(
 			<ToastProvider>
 				<AuthProvider>
 					<UserProvider>
-						<div className="min-h-screen bg-base-300">
-							<App />
-						</div>
+						<GenreProvider>
+							<SearchProvider>
+								<div className="min-h-screen bg-base-300">
+									<App />
+								</div>
+							</SearchProvider>
+						</GenreProvider>
 					</UserProvider>
 				</AuthProvider>
 			</ToastProvider>
