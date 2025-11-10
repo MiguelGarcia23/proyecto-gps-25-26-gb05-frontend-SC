@@ -1,13 +1,8 @@
-import {
-	createContext,
-	useEffect,
-	useState,
-	type ReactNode,
-} from 'react';
+import { createContext, useEffect, useState, type ReactNode } from 'react';
 import { useAuth } from './auth.context';
 import { useToast } from './toast.context';
 import { useContext } from 'react';
-import { supabase} from '../lib/supabase.ts';
+import { supabase } from '../lib/supabase.ts';
 
 interface FullUser {
 	id: string;
@@ -72,7 +67,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 					Authorization: `Bearer ${session?.access_token}`,
 				},
 				body: JSON.stringify(data),
-			}
+			},
 		);
 
 		if (!response.ok) {
@@ -95,7 +90,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 					Authorization: `Bearer ${session?.access_token}`,
 				},
 				body: JSON.stringify(data),
-			}
+			},
 		);
 
 		if (!response.ok) {
@@ -119,7 +114,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 					Authorization: `Bearer ${session?.access_token}`,
 				},
 				body: JSON.stringify(data),
-			}
+			},
 		);
 
 		if (!response.ok) {
@@ -128,13 +123,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		}
 
 		await fetchUser();
-		await supabase.auth.updateUser({ password: data })
+		await supabase.auth.updateUser({ password: data });
 		toast.showToast('Contraseña actualizada', 'success', 3000);
 	};
 
 	return (
 		<UserContext.Provider
-			value={{ fullUser, loading, fetchUser, updatePublicUser, updatePrivateUser, updatePassword }}
+			value={{
+				fullUser,
+				loading,
+				fetchUser,
+				updatePublicUser,
+				updatePrivateUser,
+				updatePassword,
+			}}
 		>
 			{children}
 		</UserContext.Provider>
