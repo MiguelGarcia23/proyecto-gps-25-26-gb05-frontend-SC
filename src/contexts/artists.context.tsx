@@ -60,7 +60,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 	)=> {
 		const formData = new FormData();
 		formData.append('albumName', albumName);
-		formData.append('albumSong', albumSong);
+		formData.append('albumSong', JSON.stringify(albumSong));
 		formData.append('albumCover', albumCover);
 
 		const response = await fetch(`${window.location.origin}/api/v1/songs`,{
@@ -82,7 +82,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 			const formData = new FormData();
 			formData.append('productName', productName);
 			formData.append('productMerch', productMerch);
-			formData.append('productType', productType);
+			formData.append('productType', JSON.stringify(productType));
 			formData.append('productPrice', productPrice);
 
 			const response = await fetch(`${window.location.origin}/api/v1/songs`,{
