@@ -19,7 +19,12 @@ interface ArtistContextType{
 		albumSong: string[],
 		albumCover: File,
 	) => Promise<void>;
-
+	uploadMerch: (
+		productName: string,
+		productMerch: string,
+		productType: string[],
+		productPrice: string,
+	) => Promise<void>;
 }
 
 
@@ -55,7 +60,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 	)=> {
 		const formData = new FormData();
 		formData.append('albumName', albumName);
-		formData.append('albumSong', albumSong);
+		formData.append('albumSong', JSON.stringify(albumSong));
 		formData.append('albumCover', albumCover);
 
 		const response = await fetch(`${window.location.origin}/api/v1/songs`,{
@@ -68,8 +73,29 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		})
 	};
 
+		const uploadMerch = async (
+			productName: string,
+			productMerch: string,
+			productType: string[],
+			productPrice: string,
+		) => {
+			const formData = new FormData();
+			formData.append('productName', productName);
+			formData.append('productMerch', productMerch);
+			formData.append('productType', JSON.stringify(productType));
+			formData.append('productPrice', productPrice);
+
+			const response = await fetch(`${window.location.origin}/api/v1/songs`,{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'multipart/form-data',
+					Authorization: `Bearer ${auth.session?.access_token}`
+				},
+				body: formData
+			})
+		}
 	return(
-		<ArtistContext.Provider value={{uploadSong, uploadAlbum}}>
+		<ArtistContext.Provider value={{uploadSong, uploadAlbum, uploadMerch}}>
 			{children}
 		</ArtistContext.Provider>
 	)
