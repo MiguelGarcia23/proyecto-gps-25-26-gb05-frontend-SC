@@ -8,6 +8,7 @@ import { UserProvider } from './contexts/user.context.tsx';
 import { ArtistProvider } from './contexts/artists.context.tsx';
 import { GenreProvider } from './contexts/genre.context.tsx';
 import { SearchProvider } from './contexts/search.context.tsx';
+import { HelpProvider } from './contexts/help.context.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -17,12 +18,14 @@ createRoot(document.getElementById('root')!).render(
 					<UserProvider>
 						<ArtistProvider>
 							<GenreProvider>
-                <SearchProvider>
-                  <div className="min-h-screen bg-base-300">
-                    <App />
-                  </div>
-                </SearchProvider>
-						  </GenreProvider>
+								<HelpProvider>
+									<SearchProvider>
+										<div className="min-h-screen bg-base-300">
+											<App />
+										</div>
+									</SearchProvider>
+								</HelpProvider>
+							</GenreProvider>
 						</ArtistProvider>
 					</UserProvider>
 				</AuthProvider>
