@@ -13,11 +13,16 @@ export default defineConfig({
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api\/v1\/auth/, '')
             },
-												'/api/v1/content': { target: 'http://localhost:3000',
-																changeOrigin: true,
-																secure: false,
-																rewrite: (path) => path.replace(/^\/api\/v1\/content/, '')
-												}
+			'/api/v1/content': { target: 'http://localhost:3000',
+							changeOrigin: true,
+							secure: false,
+							rewrite: (path) => path.replace(/^\/api\/v1\/content/, '')
+			},
+			'/api/v1/compras': { target: 'http://localhost:3200',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1\/compras/, '')
+			}
         }
     }
 })
