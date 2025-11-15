@@ -118,7 +118,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 				};
 
 				arrayResponse.push(fixedData);
-			} else if (cart.items[1].type === 'merch') {
+			} else if (cart.items[i].type === 'merch') {
 				const url = new URL(
 					`${window.location.origin}/api/v1/content/products/${cart.items[i].uuid}`,
 				);
