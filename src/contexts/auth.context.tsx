@@ -120,8 +120,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	const resetPassword = async () => {
-		const { data, error } = await supabase.auth.resetPasswordForEmail(user!.email!);
-	}
+		const { data, error } = await supabase.auth.resetPasswordForEmail(
+			user!.email!,
+		);
+	};
 
 	return (
 		<AuthContext.Provider

@@ -42,7 +42,7 @@ function SignIn() {
 	};
 
 	return (
-		<div className="flex flex-col min-h-screen items-center justify-center">
+		<div className="flex flex-col min-h-screen items-center justify-center py-5">
 			<div className="card w-96 shadow-sm p-3 bg-white">
 				<div className="flex flex-col items-center">
 					<TbMusicBolt className="w-60 h-60" />

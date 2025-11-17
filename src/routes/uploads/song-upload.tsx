@@ -1,6 +1,6 @@
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { MdOutlineUploadFile } from 'react-icons/md';
-import { useArtist } from '../../contexts/artists.context.tsx';
+import { useArtist } from '../../contexts/pending/artists.context.tsx';
 
 type SongForm = {
 	songName: string;

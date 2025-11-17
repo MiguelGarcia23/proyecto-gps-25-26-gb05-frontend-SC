@@ -6,7 +6,7 @@ import {
 	type ReactNode,
 } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuth } from './auth.context.tsx';
+import { useAuth } from '../auth.context.tsx';
 
 interface ArtistContextType {
 	uploadSong: (

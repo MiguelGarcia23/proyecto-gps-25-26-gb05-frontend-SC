@@ -1,4 +1,7 @@
-import { type CartItemProps, useCart } from '../../contexts/cart.context.tsx';
+import {
+	type CartItemProps,
+	useCart,
+} from '../../contexts/pending/cart.context.tsx';
 import { useEffect, useState } from 'react';
 
 function Checkout() {
@@ -6,19 +9,16 @@ function Checkout() {
 	const [cart, setCart] = useState<CartItemProps[]>([]);
 
 	// Campos del formulario de dirección
-	const [street, setStreet] = useState("");
-	const [city, setCity] = useState("");
-	const [state, setState] = useState("");
-	const [zip, setZip] = useState("");
+	const [street, setStreet] = useState('');
+	const [city, setCity] = useState('');
+	const [state, setState] = useState('');
+	const [zip, setZip] = useState('');
 
 	useEffect(() => {
 		shoppingCart.getProducts().then((result) => setCart(result));
 	}, []);
 
-	const total = cart.reduce(
-		(acc, item) => acc + item.price * item.quantity,
-		0
-	);
+	const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
 	const handleCheckout = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -30,15 +30,14 @@ function Checkout() {
 			zip,
 		};
 
-		console.log("Dirección:", shippingData);
-		console.log("Productos comprados:", cart);
+		console.log('Dirección:', shippingData);
+		console.log('Productos comprados:', cart);
 
-		alert("Pedido realizado con éxito");
+		alert('Pedido realizado con éxito');
 	};
 
 	return (
 		<div className="flex flex-col mx-auto w-full max-w-3xl p-6 gap-6">
-
 			<h2 className="text-3xl font-bold text-center">Checkout</h2>
 
 			<div className="flex flex-col gap-4 overflow-y-auto max-h-96 p-4 border rounded-lg bg-base-200">
@@ -70,11 +69,12 @@ function Checkout() {
 				)}
 			</div>
 
-			<div className="text-xl font-bold text-center">
-				Total: {total} €
-			</div>
+			<div className="text-xl font-bold text-center">Total: {total} €</div>
 
-			<form onSubmit={handleCheckout} className="flex flex-col gap-4 bg-base-200 p-6 rounded-lg shadow">
+			<form
+				onSubmit={handleCheckout}
+				className="flex flex-col gap-4 bg-base-200 p-6 rounded-lg shadow"
+			>
 				<h3 className="text-xl font-bold mb-2">Dirección de envío</h3>
 
 				<div className="flex flex-col">
@@ -130,7 +130,6 @@ function Checkout() {
 					Completar pedido
 				</button>
 			</form>
-
 		</div>
 	);
 }

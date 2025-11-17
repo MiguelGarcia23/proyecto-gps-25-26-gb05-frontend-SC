@@ -14,17 +14,12 @@ function CheckOrders() {
 			) : (
 				<div className="space-y-6">
 					{orders.map((order) => (
-						<div
-							key={order.uuid}
-							className="p-6 bg-base-200 rounded-xl shadow"
-						>
+						<div key={order.uuid} className="p-6 bg-base-200 rounded-xl shadow">
 							<div className="flex justify-between items-center mb-4">
 								<h2 className="text-xl font-semibold">
 									Pedido #{order.uuid.slice(0, 8)}
 								</h2>
-								<span className="badge badge-info text-sm">
-                                    {order.status}
-                                </span>
+								<span className="badge badge-info text-sm">{order.status}</span>
 							</div>
 
 							<div className="space-y-3">

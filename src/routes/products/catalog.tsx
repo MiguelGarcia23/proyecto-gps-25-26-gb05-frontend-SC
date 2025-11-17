@@ -2,11 +2,11 @@ import { Filters } from './filters.tsx';
 import SearchProduct from './searchProduct.tsx';
 import { OrderBy } from './orderBy.tsx';
 import { useEffect, useState } from 'react';
-import { type Genre, useGenre } from '../../contexts/genre.context.tsx';
+import { type Genre, useGenre } from '../../contexts/pending/genre.context.tsx';
 import {
 	type searchResponse,
 	useSearch,
-} from '../../contexts/search.context.tsx';
+} from '../../contexts/pending/search.context.tsx';
 import ProductCard from './product.tsx';
 
 function Catalog() {

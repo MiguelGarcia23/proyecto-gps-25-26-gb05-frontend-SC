@@ -1,7 +1,12 @@
-import {useNavigate, useParams} from 'react-router';
-import {useEffect, useState} from 'react';
-import {type Order, type OrderItem, OrderStatus, useOrder,} from '../../../contexts/order.context.tsx';
-import type {Address} from '../../../contexts/user.context.tsx';
+import { useNavigate, useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import {
+	type Order,
+	type OrderItem,
+	OrderStatus,
+	useOrder,
+} from '../../../contexts/order.context.tsx';
+import type { Address } from '../../../contexts/user.context.tsx';
 
 const OrderItemCard = ({ item }: { item: OrderItem }) => {
 	return (

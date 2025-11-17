@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Genre } from '../../contexts/genre.context.tsx';
+import type { Genre } from '../../contexts/pending/genre.context.tsx';
 
 interface SelectorDeGenerosProps {
 	generosDisponibles: Genre[];

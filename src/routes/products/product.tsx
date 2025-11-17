@@ -1,4 +1,4 @@
-import type { Album, Song } from '../../contexts/search.context.tsx';
+import type { Album, Song } from '../../contexts/pending/search.context.tsx';
 
 const minimo = (
 	precio1: number,

@@ -4,7 +4,7 @@ import { removeEmptyFields } from '../../lib/util.ts';
 import { MdClose, MdEdit } from 'react-icons/md';
 import { useAuth } from '../../contexts/auth.context.tsx';
 import AddressBook from './settings/address-book.component.tsx';
-import {useToast} from "../../contexts/toast.context.tsx";
+import { useToast } from '../../contexts/toast.context.tsx';
 
 type UpdateUserForm = {
 	firstName: string;
@@ -102,14 +102,17 @@ const UserSettings = () => {
 			<div className="flex gap-2">
 				<div className="flex flex-col gap-2">
 					<UpdateUser />
-					<button className="btn btn-active" onClick={async () => {
-						await auth.resetPassword();
-						toast.showToast(
-							'Se ha enviado un correo para restablecer la contraseña.',
-							'info',
-							5000
-						);
-					}}>
+					<button
+						className="btn btn-active"
+						onClick={async () => {
+							await auth.resetPassword();
+							toast.showToast(
+								'Se ha enviado un correo para restablecer la contraseña.',
+								'info',
+								5000,
+							);
+						}}
+					>
 						Restablecer contraseña
 					</button>
 					<DeleteAccountBtn />

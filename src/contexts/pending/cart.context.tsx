@@ -6,7 +6,7 @@ import {
 	useEffect,
 } from 'react';
 import type { Album, Song } from './search.context.tsx';
-import { useToast } from './toast.context.tsx';
+import { useToast } from '../toast.context.tsx';
 
 export interface CartItemType {
 	type: 'song' | 'album' | 'merch';

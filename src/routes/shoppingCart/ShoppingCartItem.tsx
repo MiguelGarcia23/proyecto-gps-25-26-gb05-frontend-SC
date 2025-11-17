@@ -1,4 +1,7 @@
-import { type CartItemProps, useCart } from '../../contexts/cart.context.tsx';
+import {
+	type CartItemProps,
+	useCart,
+} from '../../contexts/pending/cart.context.tsx';
 
 function ShoppingCartItem({ item }: { item: CartItemProps }) {
 	const cart = useCart();

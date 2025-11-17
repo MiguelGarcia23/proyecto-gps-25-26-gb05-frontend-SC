@@ -1,6 +1,6 @@
 import { MdOutlineLibraryMusic } from 'react-icons/md';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { useArtist } from '../../contexts/artists.context.tsx';
+import { useArtist } from '../../contexts/pending/artists.context.tsx';
 
 type AlbumForm = {
 	albumName: string;
