@@ -1,17 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 import { useAuth } from './auth.context.tsx';
+import type { Address } from './user.context.tsx';
 
-export type OrderItem = {
-	uuid: string;
-	title: string;
-	type: 'album' | 'song' | 'merch';
-	format?: 'cd' | 'vinyl' | 'cassette' | 'digital';
-	img: string;
-	price: number;
-	quantity: number;
-};
-
+// @ts-ignore
 export enum OrderStatus {
 	PENDING_PAYMENT = 'pending_payment',
 	PAID = 'paid',
@@ -21,60 +12,87 @@ export enum OrderStatus {
 	CANCELLED = 'cancelled',
 }
 
-export type Order = {
+export const OrderStatusMapping = {
+	[OrderStatus.PENDING_PAYMENT]: 'Pendiente de pago',
+	[OrderStatus.PAID]: 'Pagado',
+	[OrderStatus.PREPARING]: 'En preparación',
+	[OrderStatus.SHIPPED]: 'Enviado',
+	[OrderStatus.DELIVERED]: 'Entregado',
+	[OrderStatus.CANCELLED]: 'Cancelado',
+};
+
+export interface OrderItem {
 	uuid: string;
-	userUuid: string;
+	title: string;
+	type: 'album' | 'song' | 'merch';
+	format?: 'cd' | 'vinyl' | 'cassette' | 'digital';
+	img: string;
+	price: number;
+	quantity: number;
+}
+
+export interface Order {
+	uuid: string;
 	creationDate: string;
 	status: OrderStatus;
 	items: OrderItem[];
+	address: Address;
 	shippingPrice: number;
 	totalPrice: number;
-	stripeSessionId: string;
-};
+}
 
 interface OrderContextType {
-	orders: Order[];
-	fetchOrders: () => Promise<void>;
+	getOrders: () => Promise<Order[]>;
+	getOrder: (uuid: string) => Promise<Order>;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
-	const [orders, setOrders] = useState<Order[]>([]);
-	const { session } = useAuth();
+	const auth = useAuth();
 
-	const fetchOrders = async () => {
-		if (!session) return;
-
-		try {
-			const res = await fetch(`${window.location.origin}/api/v1/orders`, {
-				headers: {
-					Authorization: `Bearer ${session.access_token}`,
-				},
-			});
-
-			if (!res.ok) throw new Error('Error al obtener pedidos');
-
-			const data: Order[] = await res.json();
-			setOrders(data);
-		} catch (err) {
-			console.error(err);
-		}
+	const getOrders = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/orders`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`,
+			},
+		});
+		const body = await response.json();
+		return body as Order[];
 	};
 
-	useEffect(() => {
-		if (session) fetchOrders();
-	}, [session]);
+	const getOrder = async (uuid: string) => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/orders/${uuid}`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${auth.session?.access_token}`,
+				},
+			},
+		);
+		if (!response.ok) throw new Error();
+
+		const body = await response.json();
+		return body as Order;
+	};
 
 	return (
-		<OrderContext.Provider value={{ orders, fetchOrders }}>
+		<OrderContext.Provider
+			value={{
+				getOrders,
+				getOrder,
+			}}
+		>
 			{children}
 		</OrderContext.Provider>
 	);
 };
 
-export const useOrders = () => {
-	const ctx = useContext(OrderContext);
-	if (!ctx) throw new Error('useOrders debe usarse dentro de OrderProvider');
-	return ctx;
+export const useOrder = () => {
+	const context = useContext(OrderContext);
+	if (!context)
+		throw new Error('useOrder sólo puede ser usado dentro de OrderContext');
+	return context;
 };

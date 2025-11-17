@@ -26,6 +26,7 @@ interface AuthContextType {
 	signInWithGoogle: () => Promise<void>;
 	signOut: () => Promise<void>;
 	deleteAccount: () => Promise<void>;
+	resetPassword: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -118,6 +119,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 	};
 
+	const resetPassword = async () => {
+		const { data, error } = await supabase.auth.resetPasswordForEmail(user!.email!);
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -129,6 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				signInWithGoogle,
 				signOut,
 				deleteAccount,
+				resetPassword,
 			}}
 		>
 			{children}
