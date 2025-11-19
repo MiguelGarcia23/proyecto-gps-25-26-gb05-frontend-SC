@@ -10,6 +10,7 @@ import { GenreProvider } from './contexts/genre.context.tsx';
 import { SearchProvider } from './contexts/search.context.tsx';
 import { AdminProvider } from './contexts/admin.context.tsx';
 import { HelpProvider } from './contexts/help.context.tsx';
+import { WishlistProvider } from './contexts/wishlist.context.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -21,9 +22,11 @@ createRoot(document.getElementById('root')!).render(
 							<ArtistProvider>
 								<GenreProvider>
 									<SearchProvider>
-										<div className="min-h-screen bg-base-300">
-											<App />
-										</div>
+										<WishlistProvider>
+											<div className="min-h-screen bg-base-300">
+												<App />
+											</div>
+									 </WishlistProvider>
 									</SearchProvider>
 								</GenreProvider>
 							</ArtistProvider>
@@ -34,9 +37,11 @@ createRoot(document.getElementById('root')!).render(
 							<GenreProvider>
 								<HelpProvider>
 									<SearchProvider>
-										<div className="min-h-screen bg-base-300">
-											<App />
-										</div>
+										<WishlistProvider>
+											<div className="min-h-screen bg-base-300">
+												<App />
+											</div>
+										</WishlistProvider>
 									</SearchProvider>
 								</HelpProvider>
 							</GenreProvider>
