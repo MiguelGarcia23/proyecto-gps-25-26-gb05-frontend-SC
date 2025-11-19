@@ -1,8 +1,8 @@
-import type {Artist} from "./artist.context.tsx";
-import type {Genre} from "./genre.context.tsx";
-import type {Song} from "./song.context.tsx";
-import type {Pricing} from "../common/pricing.interface.ts";
-import {createContext, type ReactNode, useContext} from "react";
+import type { Artist } from './artist.context.tsx';
+import type { Genre } from './genre.context.tsx';
+import type { Song } from './song.context.tsx';
+import type { Pricing } from '../common/pricing.interface.ts';
+import { createContext, type ReactNode, useContext } from 'react';
 
 export interface Album {
 	uuid: string;
@@ -27,14 +27,14 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
 		const response = await fetch(
 			`${window.location.origin}/api/v1/albums/${uuid}`,
 			{
-				method: 'GET'
+				method: 'GET',
 			},
 		);
 		if (!response.ok) throw new Error();
 
 		const body = await response.json();
 		return body as Album;
-	}
+	};
 
 	return (
 		<AlbumContext.Provider
@@ -50,6 +50,6 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
 export const useAlbum = () => {
 	const context = useContext(AlbumContext);
 	if (!context)
-		throw new Error('useAlbum sólo puede ser usado dentro de AlbumContext')
+		throw new Error('useAlbum sólo puede ser usado dentro de AlbumContext');
 	return context;
-}
+};

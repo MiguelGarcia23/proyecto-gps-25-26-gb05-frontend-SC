@@ -2,7 +2,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import {
 	type CartItemProps,
 	useCart,
-} from '../../contexts/pending/cart.context.tsx';
+} from '../../../contexts/pending/cart.context.tsx';
 import ShoppingCartItem from './ShoppingCartItem.tsx';
 import { useEffect, useState } from 'react';
 import AddToCartButton from './AddToCartButton.tsx';

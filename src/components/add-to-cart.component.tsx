@@ -1,11 +1,13 @@
-import {useToast} from "../contexts/toast.context.tsx";
-import {useState} from "react";
-import {MdShoppingCart} from "react-icons/md";
-import type {Album} from "../contexts/album.context.tsx";
-import type {Song} from "../contexts/song.context.tsx";
+import { useToast } from '../contexts/toast.context.tsx';
+import { useState } from 'react';
+import { MdShoppingCart } from 'react-icons/md';
+import type { Album } from '../contexts/album.context.tsx';
+import type { Song } from '../contexts/song.context.tsx';
+import { useCart } from '../contexts/cart.context.tsx';
 
 const AddToCart = ({ item }: { item: Song | Album }) => {
 	const toast = useToast();
+	const cart = useCart();
 	const [format, setFormat] = useState<string | undefined>(undefined);
 
 	const formatChange = (e: any) => {
@@ -16,7 +18,7 @@ const AddToCart = ({ item }: { item: Song | Album }) => {
 		if (format === undefined) {
 			toast.showToast('Escoge un formato', 'error', 2000);
 		}
-		// TODO añadir al carrito
+		cart.add(item, format as any);
 	};
 
 	return (
@@ -30,9 +32,7 @@ const AddToCart = ({ item }: { item: Song | Album }) => {
 				<option value="digital">
 					Digital {(item.pricing.digital / 100).toFixed(2)} €
 				</option>
-				<option value="cd">
-					CD {(item.pricing.cd / 100).toFixed(2)} €
-				</option>
+				<option value="cd">CD {(item.pricing.cd / 100).toFixed(2)} €</option>
 				<option value="vinyl">
 					Vinilo {(item.pricing.vinyl / 100).toFixed(2)} €
 				</option>
@@ -45,7 +45,7 @@ const AddToCart = ({ item }: { item: Song | Album }) => {
 				Añadir al carrito
 			</button>
 		</div>
-	)
-}
+	);
+};
 
 export default AddToCart;

@@ -1,6 +1,6 @@
-import type {Song} from "../../contexts/song.context.tsx";
-import {useEffect, useRef, useState} from "react";
-import {MdPlayArrow, MdStop} from "react-icons/md";
+import type { Song } from '../../contexts/song.context.tsx';
+import { useEffect, useRef, useState } from 'react';
+import { MdPlayArrow, MdStop } from 'react-icons/md';
 
 const SongPreviewButton = ({ song }: { song: Song }) => {
 	const previewRef = useRef<HTMLAudioElement>(null);
@@ -17,6 +17,13 @@ const SongPreviewButton = ({ song }: { song: Song }) => {
 			navigator.mediaSession.setActionHandler('pause', pause);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (!previewRef.current) return;
+		previewRef.current.addEventListener('ended', () => {
+			setPlaying(false);
+		});
+	}, [previewRef]);
 
 	const play = () => {
 		const preview = previewRef.current;

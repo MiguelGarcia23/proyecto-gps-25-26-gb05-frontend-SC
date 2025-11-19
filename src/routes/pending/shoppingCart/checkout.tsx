@@ -1,7 +1,7 @@
 import {
 	type CartItemProps,
 	useCart,
-} from '../../contexts/pending/cart.context.tsx';
+} from '../../../contexts/pending/cart.context.tsx';
 import { useEffect, useState } from 'react';
 
 function Checkout() {

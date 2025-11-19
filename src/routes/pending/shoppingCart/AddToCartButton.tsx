@@ -1,7 +1,7 @@
 import {
 	type CartItemType,
 	useCart,
-} from '../../contexts/pending/cart.context.tsx';
+} from '../../../contexts/pending/cart.context.tsx';
 import { FaCartPlus } from 'react-icons/fa';
 
 function AddToCartButton({ item }: { item: CartItemType }) {

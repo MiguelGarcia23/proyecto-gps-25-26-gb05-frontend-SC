@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 import { type Song, useSong } from '../../contexts/song.context.tsx';
 import { useNavigate, useParams } from 'react-router';
-import {
-	MdFavorite,
-	MdPlaylistAdd,
-} from 'react-icons/md';
-import SongPreviewButton from "./song-preview-button.component.tsx";
-import AddToCart from "../../components/add-to-cart.component.tsx";
+import { MdFavorite, MdPlaylistAdd } from 'react-icons/md';
+import SongPreviewButton from './song-preview-button.component.tsx';
+import AddToCart from '../../components/add-to-cart.component.tsx';
 
 const SongInfo = () => {
 	const { uuid } = useParams();

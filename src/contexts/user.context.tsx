@@ -6,6 +6,8 @@ import {
 	useState,
 } from 'react';
 import { useAuth } from './auth.context';
+import type { Song } from './song.context.tsx';
+import type { Album } from './album.context.tsx';
 
 interface UserProfile {
 	uuid: string;
@@ -35,6 +37,11 @@ export interface Address {
 	phoneNumber: number;
 }
 
+export interface LibraryItem {
+	type: string;
+	item: Song | Album;
+}
+
 interface UserContextType {
 	profile: UserProfile | null;
 	user: User | null;
@@ -44,6 +51,7 @@ interface UserContextType {
 	postAddress: (address: Address) => Promise<Address>;
 	updateAddress: (address: Address) => Promise<Address>;
 	deleteAddress: (uuid: string) => Promise<void>;
+	getLibrary: () => Promise<LibraryItem[]>;
 
 	//updatePublicUser: (data: Partial<FullUser>) => Promise<void>;
 	//updatePassword: (data: string) => Promise<void>;
@@ -114,6 +122,21 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		return (await response.json()) as Address[];
 	};
 
+	const getLibrary = async () => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/users/library`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${auth.session?.access_token}`,
+				},
+			},
+		);
+		if (!response.ok) throw new Error();
+
+		return (await response.json()) as LibraryItem[];
+	};
+
 	const postAddress = async (address: Address) => {
 		const response = await fetch(
 			`${window.location.origin}/api/v1/auth/users/addresses`,
@@ -161,61 +184,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 	};
 
-	/*
-	const { session } = useAuth();
-	const [fullUser, setFullUser] = useState<FullUser | null>(null);
-	const [loading, setLoading] = useState(true);
-	const toast = useToast();
-
-	//3. Update público
-	const updatePublicUser = async (data: Partial<FullUser>) => {
-		const response = await fetch(
-			`${window.location.origin}/api/v1/users/public`,
-			{
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${session?.access_token}`,
-				},
-				body: JSON.stringify(data),
-			},
-		);
-
-		if (!response.ok) {
-			toast.showToast('Error actualizando datos públicos', 'error', 4000);
-			return;
-		}
-
-		await fetchUser();
-		toast.showToast('Perfil actualizado', 'success', 3000);
-	};
-
-	//5. Update password
-
-	const updatePassword = async (data: string) => {
-		const response = await fetch(
-			`${window.location.origin}/api/v1/users/password`,
-			{
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${session?.access_token}`,
-				},
-				body: JSON.stringify(data),
-			},
-		);
-
-		if (!response.ok) {
-			toast.showToast('Error actualizando contraseña', 'error', 4000);
-			return;
-		}
-
-		await fetchUser();
-		await supabase.auth.updateUser({ password: data });
-		toast.showToast('Contraseña actualizada', 'success', 3000);
-	};
-	*/
-
 	return (
 		<UserContext.Provider
 			value={{
@@ -227,6 +195,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 				postAddress,
 				updateAddress,
 				deleteAddress,
+				getLibrary,
 			}}
 		>
 			{children}

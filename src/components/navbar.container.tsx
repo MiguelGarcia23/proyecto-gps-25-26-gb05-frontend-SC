@@ -9,6 +9,7 @@ import {
 } from 'react-icons/md';
 import { useAuth } from '../contexts/auth.context.tsx';
 import { useUser } from '../contexts/user.context.tsx';
+import { useCart } from '../contexts/cart.context.tsx';
 
 const UserDropdown = () => {
 	const navigate = useNavigate();
@@ -70,6 +71,7 @@ const UserDropdown = () => {
 const NavBar = () => {
 	const navigate = useNavigate();
 	const auth = useAuth();
+	const cart = useCart();
 
 	return (
 		<div className="navbar bg-base-100 shadow-sm fixed top-0 left-0 right-0 z-10">
@@ -80,11 +82,18 @@ const NavBar = () => {
 			</div>
 
 			<div className="navbar-center grow">
-				<input
-					type="text"
-					placeholder="Buscar..."
-					className="input min-w-xl w-full"
-				/>
+				<form
+					onSubmit={(e: any) => {
+						e.preventDefault();
+						navigate(`/shop/?query=${e.target[0].value}`);
+					}}
+				>
+					<input
+						type="text"
+						placeholder="Buscar..."
+						className="input min-w-xl w-full"
+					/>
+				</form>
 			</div>
 
 			<div className="navbar-end gap-2">
@@ -97,12 +106,15 @@ const NavBar = () => {
 				<div
 					role="button"
 					className="btn btn-ghost btn-circle"
-					onClick={() => navigate('/help')}
 				>
-					<div className="indicator">
-						<MdShoppingCart className="w-6 h-6" />
-						<span className="badge badge-accent badge-xs indicator-item">6</span>
-					</div>
+					<label htmlFor="cart-drawer" className="drawer-button m-0 pt-2 cursor-pointer">
+						<div className="indicator">
+							<MdShoppingCart className="w-6 h-6" />
+							<span className="badge badge-accent badge-xs indicator-item">
+							{cart.cart.length}
+						</span>
+						</div>
+					</label>
 				</div>
 				{auth.session === null ? (
 					<button

@@ -2,7 +2,6 @@ import './App.css';
 import { Outlet, Route, Routes } from 'react-router';
 import SignUp from './routes/auth/sign-up.tsx';
 import SignIn from './routes/auth/sign-in.tsx';
-import Catalog from './routes/products/catalog.tsx';
 import NavBarContainer from './components/navbar.container.tsx';
 import Index from './routes';
 import UserDashboard from './routes/user/user-dashboard.tsx';
@@ -13,7 +12,10 @@ import OrderDetails from './routes/user/orders/order-details.tsx';
 import NotFound from './routes/not-found.tsx';
 import SongInfo from './routes/song/song-info.tsx';
 import { OrderProvider } from './contexts/order.context.tsx';
-import AlbumInfo from "./routes/album/album-info.tsx";
+import AlbumInfo from './routes/album/album-info.tsx';
+import { GenreProvider } from './contexts/genre.context.tsx';
+import UserLibrary from './routes/user/user-library.tsx';
+import Shop from './routes/shop/shop.tsx';
 
 function App() {
 	return (
@@ -32,7 +34,14 @@ function App() {
 			<Route path="" element={<NavBarContainer />}>
 				<Route path="" element={<Index />} />
 				<Route path="help"></Route>
-				<Route path="shop" element={<Catalog />} />
+				<Route
+					path="shop"
+					element={
+						<GenreProvider>
+							<Shop />
+						</GenreProvider>
+					}
+				/>
 
 				<Route path="song/:uuid" element={<SongInfo />} />
 				<Route path="album/:uuid" element={<AlbumInfo />} />
@@ -43,7 +52,7 @@ function App() {
 				>
 					<Route path="dashboard" element={<UserDashboard />}>
 						<Route path="for-you" />
-						<Route path="library" />
+						<Route path="library" element={<UserLibrary />} />
 						<Route
 							path="orders"
 							element={
