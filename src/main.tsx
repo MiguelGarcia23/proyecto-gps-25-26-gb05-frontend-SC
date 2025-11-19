@@ -10,6 +10,9 @@ import { GenreProvider } from './contexts/genre.context.tsx';
 import { SearchProvider } from './contexts/search.context.tsx';
 import { AdminProvider } from './contexts/admin.context.tsx';
 import { HelpProvider } from './contexts/help.context.tsx';
+import { ReviewsProvider } from './contexts/reviews.context.tsx';
+import { WishlistProvider } from './contexts/wishlist.context.tsx';
+import { PlaylistProvider } from './contexts/playlist.context.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
@@ -20,28 +23,21 @@ createRoot(document.getElementById('root')!).render(
 						<UserProvider>
 							<ArtistProvider>
 								<GenreProvider>
-									<SearchProvider>
-										<div className="min-h-screen bg-base-300">
-											<App />
-										</div>
-									</SearchProvider>
+									<HelpProvider>
+										<ReviewsProvider>
+											<WishlistProvider>
+												<PlaylistProvider>
+													<div className="min-h-screen bg-base-300">
+														<App />
+													</div>
+												</PlaylistProvider>
+											</WishlistProvider>
+										</ReviewsProvider>
+									</HelpProvider>
 								</GenreProvider>
 							</ArtistProvider>
 						</UserProvider>
 					</AdminProvider>
-					<UserProvider>
-						<ArtistProvider>
-							<GenreProvider>
-								<HelpProvider>
-									<SearchProvider>
-										<div className="min-h-screen bg-base-300">
-											<App />
-										</div>
-									</SearchProvider>
-								</HelpProvider>
-							</GenreProvider>
-						</ArtistProvider>
-					</UserProvider>
 				</AuthProvider>
 			</ToastProvider>
 		</BrowserRouter>
