@@ -33,7 +33,9 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
 			{children}
 
 			{toastVisible && (
-				<div className="toast toast-top toast-center">
+				<div className="toast toast-top toast-center z-20">
+					{/* Necesario para que se carguen las clases */}
+					{/* alert-error alert-info alert-success alert-warning */}
 					<div className={`alert alert-${toastType}`}>
 						<span>{toastMsg}</span>
 					</div>
