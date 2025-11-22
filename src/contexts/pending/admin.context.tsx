@@ -5,7 +5,7 @@ import {
 	useState,
 	type ReactNode,
 } from 'react';
-import { useAuth } from './auth.context.tsx';
+import { useAuth } from '../auth.context.tsx';
 
 export enum OrderStatusEnum {
 	PENDING_PAYMENT = 'pending_payment',

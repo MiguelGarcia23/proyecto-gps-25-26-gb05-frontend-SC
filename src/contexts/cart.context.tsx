@@ -9,9 +9,9 @@ import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
 import type { Product } from './product.context.tsx';
 import CartDrawer from '../components/cart-drawer.component.tsx';
-import {useToast} from "./toast.context.tsx";
+import { useToast } from './toast.context.tsx';
 
-interface CartItem {
+export interface CartItem {
 	type: 'song' | 'album' | 'merch';
 	uuid: string;
 	format?: 'cd' | 'vinyl' | 'cassette' | 'digital';
@@ -27,13 +27,14 @@ export interface CartItemPopulated extends CartItem {
 
 interface CartContextType {
 	cart: CartItem[];
-	populatedCart: CartItemPopulated[];
+	populatedCart: CartItemPopulated[] | undefined;
 	add: (
 		item: Song | Album | Product,
 		format?: 'cd' | 'vinyl' | 'cassette' | 'digital',
 	) => void;
 	remove: (item: CartItem) => void;
 	setQuantity: (item: CartItem, quantity: number) => void;
+	clear: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -41,14 +42,15 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
 	const [cart, setCart] = useState<CartItem[]>(() => {
 		const savedCart = localStorage.getItem('cart');
-		console.log(savedCart);
 		if (!savedCart) {
 			return [];
 		} else {
 			return JSON.parse(savedCart);
 		}
 	});
-	const [populatedCart, setPopulatedCart] = useState<CartItemPopulated[]>([]);
+	const [populatedCart, setPopulatedCart] = useState<
+		CartItemPopulated[] | undefined
+	>(undefined);
 	const toast = useToast();
 
 	useEffect(() => {
@@ -59,7 +61,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 	const itemEquals = (item1: CartItem, item2: CartItem) => {
 		return item1.uuid == item2.uuid && item1.format === item2.format;
-	}
+	};
 
 	const populate = async () => {
 		const result: CartItemPopulated[] = [];
@@ -100,9 +102,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 			uuid: item.uuid,
 			quantity: 1,
 		};
-		const index = cart.findIndex(
-			(i) => itemEquals(i, cartItem),
-		);
+		const index = cart.findIndex((i) => itemEquals(i, cartItem));
 
 		if (index !== -1) {
 			if (cartItem.format === 'digital') {
@@ -119,6 +119,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
 	const remove = (item: CartItem) => {
 		setCart([...cart.filter((i) => !itemEquals(i, item))]);
+	};
+
+	const clear = () => {
+		setCart([]);
 	};
 
 	const setQuantity = (item: CartItem, quantity: number) => {
@@ -141,6 +145,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 				add,
 				remove,
 				setQuantity,
+				clear,
 			}}
 		>
 			{children}

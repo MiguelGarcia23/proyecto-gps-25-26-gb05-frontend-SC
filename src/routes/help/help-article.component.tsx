@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHelpArticles, type HelpArticle } from '../../contexts/help.context';
+import {
+	useHelpArticles,
+	type HelpArticle,
+} from '../../contexts/help.context.tsx';
 
 interface HelpArticleComponentProps {
 	uuid: string;

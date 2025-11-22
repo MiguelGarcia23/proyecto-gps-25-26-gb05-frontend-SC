@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useHelpArticles, type HelpArticle } from '../../contexts/help.context';
-import HelpArticleComponent from './help-article';
-import HelpArticleCard from './help-article-card.tsx';
+import {
+	useHelpArticles,
+	type HelpArticle,
+} from '../../contexts/help.context.tsx';
+import HelpArticleComponent from './help-article.component.tsx';
+import HelpArticleCard from './help-article-card.component.tsx';
 
 const Help: React.FC = () => {
 	const { getHelpArticles } = useHelpArticles();

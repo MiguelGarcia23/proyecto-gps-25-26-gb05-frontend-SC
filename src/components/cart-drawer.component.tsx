@@ -1,14 +1,17 @@
 import { type CartItemPopulated, useCart } from '../contexts/cart.context.tsx';
-import {MdDelete, MdShoppingCart} from 'react-icons/md';
-import {useNavigate} from "react-router";
+import { MdDelete, MdShoppingCart } from 'react-icons/md';
+import { useNavigate } from 'react-router';
 
 const CartItemCard = ({ item }: { item: CartItemPopulated }) => {
 	const cart = useCart();
 	const format =
-		item.format == 'cd' ? 'CD' :
-		item.format == 'vinyl' ? 'Vinilo' :
-		item.format === 'digital' ? 'Digital' :
-		'Cassette';
+		item.format == 'cd'
+			? 'CD'
+			: item.format == 'vinyl'
+				? 'Vinilo'
+				: item.format === 'digital'
+					? 'Digital'
+					: 'Cassette';
 
 	return (
 		<div className="card bg-base-100 w-full shadow-sm flex-row">
@@ -23,28 +26,34 @@ const CartItemCard = ({ item }: { item: CartItemPopulated }) => {
 						<span className="badge badge-primary">{format}</span>
 					</div>
 					<div className="grow">
-						<p className="text-3xl font-semibold">{(item.price / 100).toFixed(2)} <span className="text-xl">€</span></p>
+						<p className="text-3xl font-semibold">
+							{(item.price / 100).toFixed(2)} <span className="text-xl">€</span>
+						</p>
 					</div>
 				</div>
 				<div className="flex">
-					<button
-						className="btn btn-shadow btn-square rounded-none rounded-tl-md rounded-bl-md"
-						onClick={() => cart.setQuantity(item, item.quantity - 1)}
-					>
-						-
-					</button>
+					{item.format !== 'digital' && (
+						<button
+							className="btn btn-shadow btn-square rounded-none rounded-tl-md rounded-bl-md"
+							onClick={() => cart.setQuantity(item, item.quantity - 1)}
+						>
+							-
+						</button>
+					)}
 					<input
 						type="number"
 						disabled
 						placeholder={item.quantity.toString()}
 						className="input rounded-none w-16 text-center"
 					/>
-					<button
-						className="btn btn-shadow btn-square rounded-none rounded-tr-md rounded-br-md"
-						onClick={() => cart.setQuantity(item, item.quantity + 1)}
-					>
-						+
-					</button>
+					{item.format !== 'digital' && (
+						<button
+							className="btn btn-shadow btn-square rounded-none rounded-tr-md rounded-br-md"
+							onClick={() => cart.setQuantity(item, item.quantity + 1)}
+						>
+							+
+						</button>
+					)}
 
 					<button
 						className="btn btn-error btn-square ml-2"
@@ -61,6 +70,9 @@ const CartItemCard = ({ item }: { item: CartItemPopulated }) => {
 const CartDrawer = () => {
 	const cart = useCart();
 	const navigate = useNavigate();
+
+	if (!cart.populatedCart) return <></>;
+
 	return (
 		<div className="drawer drawer-end">
 			<input id="cart-drawer" type="checkbox" className="drawer-toggle" />
@@ -73,23 +85,32 @@ const CartDrawer = () => {
 				/>
 				<div className="flex flex-col gap-2 bg-base-100 h-full w-[800px] p-5">
 					<p className="font-bold text-xl">Carrito</p>
-					{cart.populatedCart.length === 0 &&
+					{cart.populatedCart.length === 0 && (
 						<div className="flex flex-col gap-5 items-center">
 							<MdShoppingCart className="w-36 h-36" />
 							<p className="font-semibold text-xl">Tu carrito está vacío</p>
-							<button className="btn btn-primary w-fit" onClick={() => navigate('/shop')}>
+							<button
+								className="btn btn-primary w-fit"
+								onClick={() => navigate('/shop')}
+							>
 								Seguir comprando
 							</button>
 						</div>
-					}
+					)}
 					{cart.populatedCart.map((item, index) => (
 						<CartItemCard item={item} key={index} />
 					))}
-					{cart.populatedCart.length > 0 &&
-						<button className="btn btn-primary">
+					{cart.populatedCart.length > 0 && (
+						<button
+							className="btn btn-primary"
+							onClick={() => {
+								navigate('/checkout');
+								document.getElementById('cart-drawer')?.click();
+							}}
+						>
 							Pagar
 						</button>
-					}
+					)}
 				</div>
 			</div>
 		</div>
