@@ -49,6 +49,18 @@ export default defineConfig({
 				secure: false,
 				rewrite: (path) => path.replace(/^\/api\/v1/, '')
 			},
+			'/api/v1/reviews': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/wishlist': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
 			'/api/v1/orders': {
 				target: 'http://localhost:3200',
 				changeOrigin: true,

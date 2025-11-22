@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from 'react-router';
 import {
 	MdDashboardCustomize,
+	MdFavorite,
 	MdGraphicEq,
 	MdLibraryMusic,
 	MdLocalShipping,
@@ -23,6 +24,12 @@ const MenuBar = () => {
 				<a className="text-lg" onClick={() => navigate('/user/dashboard/library')}>
 					<MdLibraryMusic />
 					Biblioteca
+				</a>
+			</li>
+			<li>
+				<a className="text-lg" onClick={() => navigate('/user/dashboard/wishlist')}>
+					<MdFavorite />
+					Lista de deseados
 				</a>
 			</li>
 			<li>

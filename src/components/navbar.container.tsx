@@ -103,16 +103,16 @@ const NavBar = () => {
 				>
 					<MdHelp className="w-6 h-6" />
 				</button>
-				<div
-					role="button"
-					className="btn btn-ghost btn-circle"
-				>
-					<label htmlFor="cart-drawer" className="drawer-button m-0 pt-2 cursor-pointer">
+				<div role="button" className="btn btn-ghost btn-circle">
+					<label
+						htmlFor="cart-drawer"
+						className="drawer-button m-0 pt-2 cursor-pointer"
+					>
 						<div className="indicator">
 							<MdShoppingCart className="w-6 h-6" />
 							<span className="badge badge-accent badge-xs indicator-item">
-							{cart.cart.length}
-						</span>
+								{cart.cart.length}
+							</span>
 						</div>
 					</label>
 				</div>
