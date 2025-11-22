@@ -10,6 +10,8 @@ import {
 import { useAuth } from '../contexts/auth.context.tsx';
 import { useUser } from '../contexts/user.context.tsx';
 import { useCart } from '../contexts/cart.context.tsx';
+import { useNotifications } from '../contexts/notification.context.tsx';
+import { useEffect, useState } from 'react';
 
 const UserDropdown = () => {
 	const navigate = useNavigate();
@@ -68,6 +70,76 @@ const UserDropdown = () => {
 	);
 };
 
+const NotificationBell = () => {
+	const { notifications, fetchNotifications, deleteNotification } = useNotifications();
+	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		fetchNotifications(); // Carga las notificaciones al montar
+	}, []);
+
+	return (
+		<div className="relative">
+			<button
+				className="btn btn-ghost btn-circle relative"
+				onClick={() => setOpen(!open)}
+			>
+				{/* Icono de campana */}
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					className="h-6 w-6"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={2}
+						d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14V11a6 6 0 10-12 0v3c0 .386-.149.735-.395 1.001L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+					/>
+				</svg>
+
+				{/* Badge de número de notificaciones */}
+				{notifications.length > 0 && (
+					<span className="badge badge-xs badge-primary absolute top-0 right-0">
+					{notifications.length}
+				</span>
+				)}
+			</button>
+
+			{/* Dropdown de notificaciones */}
+			{open && (
+				<ul className="menu menu-sm dropdown-content mt-2 p-2 shadow bg-base-100 rounded-box w-80 absolute right-0 z-50">
+					{notifications.length === 0 && (
+						<li className="text-center opacity-50">No hay notificaciones</li>
+					)}
+					{notifications.map((notif) => (
+						<li key={notif.uuid} className="flex justify-between items-center gap-2">
+							<span className="truncate">{notif.message}</span>
+							<button
+								className="btn btn-ghost btn-xs"
+								onClick={() => deleteNotification(notif.uuid)}
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								</svg>
+							</button>
+						</li>
+					))}
+				</ul>
+			)}
+		</div>
+	);
+};
+
+
 const NavBar = () => {
 	const navigate = useNavigate();
 	const auth = useAuth();
@@ -103,6 +175,9 @@ const NavBar = () => {
 				>
 					<MdHelp className="w-6 h-6" />
 				</button>
+
+				<NotificationBell />
+
 				<div
 					role="button"
 					className="btn btn-ghost btn-circle"
