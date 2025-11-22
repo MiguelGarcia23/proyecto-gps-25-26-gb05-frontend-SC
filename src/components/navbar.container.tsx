@@ -186,8 +186,8 @@ const NavBar = () => {
 						<div className="indicator">
 							<MdShoppingCart className="w-6 h-6" />
 							<span className="badge badge-accent badge-xs indicator-item">
-							{cart.cart.length}
-						</span>
+								{cart.cart.length}
+							</span>
 						</div>
 					</label>
 				</div>

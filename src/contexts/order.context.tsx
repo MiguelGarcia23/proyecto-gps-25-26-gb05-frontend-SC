@@ -1,6 +1,7 @@
 import { createContext, type ReactNode, useContext } from 'react';
 import { useAuth } from './auth.context.tsx';
-import type { Address } from './user.context.tsx';
+import { type Address, useUser } from './user.context.tsx';
+import { useCart } from './cart.context.tsx';
 
 // @ts-ignore
 export enum OrderStatus {
@@ -44,12 +45,15 @@ export interface Order {
 interface OrderContextType {
 	getOrders: () => Promise<Order[]>;
 	getOrder: (uuid: string) => Promise<Order>;
+	createOrder: (addressUuid: string) => Promise<void>;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
 
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
 	const auth = useAuth();
+	const cart = useCart();
+	const user = useUser();
 
 	const getOrders = async () => {
 		const response = await fetch(`${window.location.origin}/api/v1/orders`, {
@@ -78,11 +82,38 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		return body as Order;
 	};
 
+	const createOrder = async (addressUuid: string) => {
+		const addresses = await user.getAddressBook();
+		const address = addresses.find((a) => a.uuid === addressUuid)!;
+		console.log({
+			address,
+			items: cart.cart,
+		});
+
+		const response = await fetch(`${window.location.origin}/api/v1/orders/`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				address,
+				items: cart.cart,
+			}),
+		});
+
+		if (!response.ok) throw new Error();
+		cart.clear();
+		const body = await response.json();
+		window.location = body.redirectUrl;
+	};
+
 	return (
 		<OrderContext.Provider
 			value={{
 				getOrders,
 				getOrder,
+				createOrder,
 			}}
 		>
 			{children}

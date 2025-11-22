@@ -120,10 +120,18 @@ const AddressFormModal = ({
 	);
 };
 
-const AddressItem = ({ address }: { address: Address }) => {
+const AddressItem = ({
+	address,
+	selectedAddress,
+	setSelectedAddress,
+}: {
+	address: Address;
+	selectedAddress?: string;
+	setSelectedAddress?: (a: string) => void;
+}) => {
 	const user = useUser();
 	return (
-		<div className="flex gap-5 justify-between items-start border-2 border-base-300 rounded-box p-2 w-1/3 h-fit">
+		<div className="flex gap-5 justify-between items-start border-2 border-base-300 rounded-box p-2 h-fit">
 			<div className="flex flex-col">
 				<p className="font-bold">{address.alias}</p>
 				<p className="text-sm">{address.recipientName}</p>
@@ -135,32 +143,54 @@ const AddressItem = ({ address }: { address: Address }) => {
 				<p className="text-sm">{address.state}</p>
 				<p className="text-sm">{address.phoneNumber}</p>
 			</div>
-			<div className="flex flex-col gap-2">
-				<button
-					className="btn btn-outline rounded-box btn-square"
-					onClick={() =>
-						(document.getElementById('address-edit') as any).showModal()
-					}
-				>
-					<MdEdit />
-				</button>
+			{!selectedAddress && (
+				<div className="flex flex-col gap-2">
+					<button
+						className="btn btn-outline rounded-box btn-square"
+						onClick={() =>
+							(document.getElementById('address-edit') as any).showModal()
+						}
+					>
+						<MdEdit />
+					</button>
 
-				<button
-					className="btn btn-error rounded-box btn-square"
-					onClick={async () => {
-						await user.deleteAddress(address!.uuid);
-						window.location.reload();
-					}}
-				>
-					<MdDelete />
-				</button>
-			</div>
+					<button
+						className="btn btn-error rounded-box btn-square"
+						onClick={async () => {
+							await user.deleteAddress(address!.uuid);
+							window.location.reload();
+						}}
+					>
+						<MdDelete />
+					</button>
+				</div>
+			)}
+			{selectedAddress && (
+				<div className="flex flex-col gap-2">
+					<input
+						type="checkbox"
+						className="checkbox"
+						value={address.uuid}
+						readOnly
+						checked={selectedAddress === address.uuid}
+						onClick={(e: any) => {
+							setSelectedAddress!(e.target.value);
+						}}
+					/>
+				</div>
+			)}
 			<AddressFormModal id={'address-edit'} address={address} />
 		</div>
 	);
 };
 
-const AddressBook = () => {
+const AddressBook = ({
+	selectedAddress,
+	setSelectedAddress,
+}: {
+	selectedAddress?: string;
+	setSelectedAddress?: (a: string) => void;
+}) => {
 	const user = useUser();
 	const [addresses, setAddresses] = useState<Address[] | undefined>(undefined);
 
@@ -181,10 +211,15 @@ const AddressBook = () => {
 				<AddressFormModal id={'address-add'} />
 			</div>
 			{addresses ? (
-				<div className="flex gap-2 flex-wrap">
+				<div className="flex flex-col gap-2">
 					{addresses!.length > 0 ? (
 						addresses!.map((address) => (
-							<AddressItem key={address.uuid} address={address} />
+							<AddressItem
+								key={address.uuid}
+								address={address}
+								selectedAddress={selectedAddress}
+								setSelectedAddress={setSelectedAddress}
+							/>
 						))
 					) : (
 						<p className="text-lg">Ninguna dirección guardada</p>

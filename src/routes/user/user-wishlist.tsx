@@ -1,6 +1,6 @@
-import { useWishlist } from "../../contexts/wishlist.context";
+import { useWishlist } from '../../contexts/wishlist.context.tsx';
 
-function Wishlist() {
+function UserWishlist() {
 	const { wishlist, removeFromWishlist } = useWishlist();
 
 	return (
@@ -25,12 +25,8 @@ function Wishlist() {
 
 							<div className="card-body">
 								<h2 className="card-title">{item.title}</h2>
-								<p className="text-sm opacity-70">
-									Tipo: {item.type}
-								</p>
-								<p className="font-bold text-lg">
-									{item.price} €
-								</p>
+								<p className="text-sm opacity-70">Tipo: {item.type}</p>
+								<p className="font-bold text-lg">{item.price} €</p>
 
 								<button
 									className="btn btn-error mt-4"
@@ -47,4 +43,4 @@ function Wishlist() {
 	);
 }
 
-export default Wishlist;
+export default UserWishlist;
