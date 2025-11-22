@@ -13,16 +13,54 @@ export default defineConfig({
                 secure: false,
                 rewrite: (path) => path.replace(/^\/api\/v1\/auth/, '')
             },
-			'/api/v1/content': { target: 'http://localhost:3000',
-							changeOrigin: true,
-							secure: false,
-							rewrite: (path) => path.replace(/^\/api\/v1\/content/, '')
-			},
-			'/api/v1/compras': { target: 'http://localhost:3200',
+			'/api/v1/users': {
+				target: 'http://localhost:3000',
 				changeOrigin: true,
 				secure: false,
-				rewrite: (path) => path.replace(/^\/api\/v1\/compras/, '')
-			}
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/artists': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/songs': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/albums': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/genres': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/search': {
+				target: 'http://localhost:3000',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/api/v1/orders': {
+				target: 'http://localhost:3200',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/api\/v1/, '')
+			},
+			'/static/public': {
+				target: 'http://localhost:3002',
+				changeOrigin: true,
+				secure: false,
+				rewrite: (path) => path.replace(/^\/static\/public/, '')
+			},
         }
     }
 })
