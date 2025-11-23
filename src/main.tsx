@@ -14,6 +14,7 @@ import { HelpProvider } from './contexts/help.context.tsx';
 import { WishlistProvider } from './contexts/wishlist.context.tsx';
 import { ReviewsProvider } from './contexts/reviews.context.tsx';
 import Player from './components/player.tsx';
+import { NotificationProvider } from './contexts/notification.context.tsx';
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
