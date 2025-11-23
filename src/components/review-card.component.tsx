@@ -9,12 +9,12 @@ interface ReviewCardProps {
 }
 
 const ReviewCard: React.FC<ReviewCardProps> = ({
-												   userName,
-												   rating,
-												   title,
-												   content,
-												   date,
-											   }) => {
+	userName,
+	rating,
+	title,
+	content,
+	date,
+}) => {
 	return (
 		<div className="card bg-base-100 shadow">
 			<div className="card-body">

@@ -1,9 +1,10 @@
-import { useNotifications } from "../../contexts/notification.context";
+import { useNotifications } from '../../contexts/notification.context';
 import { useEffect } from 'react';
 import Checkout from '../pending/shoppingCart/checkout.tsx';
 
 function NotificationBell() {
-	const { notifications, deleteNotification, fetchNotifications } = useNotifications();
+	const { notifications, deleteNotification, fetchNotifications } =
+		useNotifications();
 
 	useEffect(() => {
 		fetchNotifications();
@@ -16,8 +17,8 @@ function NotificationBell() {
 					<i className="fa-regular fa-bell text-xl"></i>
 					{notifications.length > 0 && (
 						<span className="badge badge-sm indicator-item">
-                            {notifications.length}
-                        </span>
+							{notifications.length}
+						</span>
 					)}
 				</div>
 			</label>

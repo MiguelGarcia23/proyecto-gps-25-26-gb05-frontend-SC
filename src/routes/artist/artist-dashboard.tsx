@@ -16,19 +16,28 @@ const MenuBar = () => {
 	return (
 		<ul className="menu bg-base-200 rounded-box w-56 h-fit">
 			<li>
-				<a className="text-lg" onClick={() => navigate('/artist/dashboard/for-you')}>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/artist/dashboard/for-you')}
+				>
 					<MdDashboardCustomize />
 					Para ti
 				</a>
 			</li>
 			<li>
-				<a className="text-lg" onClick={() => navigate('/artist/dashboard/releases')}>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/artist/dashboard/releases')}
+				>
 					<MdSend />
 					Lanzamientos
 				</a>
 			</li>
 			<li>
-				<a className="text-lg" onClick={() => navigate('/artist/dashboard/payments')}>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/artist/dashboard/payments')}
+				>
 					<MdPayments />
 					Pagos
 				</a>
@@ -40,14 +49,17 @@ const MenuBar = () => {
 				</a>
 			</li>
 			<li>
-				<a className="text-lg" onClick={() => navigate('/artist/dashboard/profile')}>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/artist/dashboard/profile')}
+				>
 					<MdPerson />
 					Perfil
 				</a>
 			</li>
 		</ul>
-	)
-}
+	);
+};
 
 const ArtistDashboard = () => {
 	return (
@@ -57,7 +69,7 @@ const ArtistDashboard = () => {
 				<Outlet />
 			</div>
 		</div>
-	)
-}
+	);
+};
 
 export default ArtistDashboard;

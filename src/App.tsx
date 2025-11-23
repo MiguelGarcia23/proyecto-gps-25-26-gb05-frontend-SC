@@ -42,7 +42,14 @@ function App() {
 
 			<Route path="" element={<NavBarContainer />}>
 				<Route path="" element={<Index />} />
-				<Route path="help" element={<HelpProvider><Help /></HelpProvider>}/>
+				<Route
+					path="help"
+					element={
+						<HelpProvider>
+							<Help />
+						</HelpProvider>
+					}
+				/>
 
 				<Route
 					path="shop"
@@ -55,7 +62,11 @@ function App() {
 
 				<Route
 					path="checkout"
-					element={<OrderProvider><Outlet /></OrderProvider>}
+					element={
+						<OrderProvider>
+							<Outlet />
+						</OrderProvider>
+					}
 				>
 					<Route index element={<Checkout />} />
 					<Route path="success" element={<CheckoutSuccess />} />
@@ -91,9 +102,23 @@ function App() {
 				</Route>
 
 				<Route path="artist" element={<RequiredRoleContainer roles={['artist']} />}>
-					<Route path="dashboard" element={<ArtistProvider><ArtistDashboard /></ArtistProvider>}>
+					<Route
+						path="dashboard"
+						element={
+							<ArtistProvider>
+								<ArtistDashboard />
+							</ArtistProvider>
+						}
+					>
 						<Route path="for-you" />
-						<Route path="releases" element={<GenreProvider><ArtistReleases /></GenreProvider>} />
+						<Route
+							path="releases"
+							element={
+								<GenreProvider>
+									<ArtistReleases />
+								</GenreProvider>
+							}
+						/>
 						<Route path="payments" />
 						<Route path="stats" />
 						<Route path="profile" />

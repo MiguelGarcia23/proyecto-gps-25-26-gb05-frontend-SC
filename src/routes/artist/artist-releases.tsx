@@ -45,10 +45,20 @@ const ArtistReleases = () => {
 					/>
 				</div>
 				<div className="flex gap-2">
-					<button className="btn btn-primary" onClick={() => (document.getElementById('song-upload-modal') as any).showModal()}>
+					<button
+						className="btn btn-primary"
+						onClick={() =>
+							(document.getElementById('song-upload-modal') as any).showModal()
+						}
+					>
 						+ Nueva canción
 					</button>
-					<button className="btn btn-primary" onClick={() => (document.getElementById('album-upload-modal') as any).showModal()}>
+					<button
+						className="btn btn-primary"
+						onClick={() =>
+							(document.getElementById('album-upload-modal') as any).showModal()
+						}
+					>
 						+ Nuevo álbum
 					</button>
 				</div>
@@ -58,7 +68,7 @@ const ArtistReleases = () => {
 			<SongUpload />
 			<AlbumUpload />
 		</div>
-	)
-}
+	);
+};
 
 export default ArtistReleases;

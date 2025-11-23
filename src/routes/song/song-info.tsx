@@ -63,7 +63,10 @@ const SongInfo = () => {
 							</div>
 							<div className="flex gap-2">
 								<SongPreviewButton song={songInfo} />
-								<button className="btn btn-square btn-secondary" onClick={() => wishlist.addToWishlist(songInfo?.uuid)}>
+								<button
+									className="btn btn-square btn-secondary"
+									onClick={() => wishlist.addToWishlist(songInfo?.uuid)}
+								>
 									<MdFavorite className="w-5 h-5" />
 								</button>
 								<button className="btn btn-square btn-neutral">
@@ -73,7 +76,7 @@ const SongInfo = () => {
 						</div>
 						<AddToCart item={songInfo} />
 					</div>
-					<Reviews type='Song' uuid={songInfo.uuid} />
+					<Reviews type="Song" uuid={songInfo.uuid} />
 				</div>
 			)}
 		</div>

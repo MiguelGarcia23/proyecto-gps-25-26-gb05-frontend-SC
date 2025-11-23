@@ -16,14 +16,14 @@ const PriceFilter = ({
 				<input
 					type="number"
 					className="input"
-					placeholder='0 €'
+					placeholder="0 €"
 					onChange={(e: any) => setMinPrice(parseFloat(e.target.value))}
 				/>
 				<div className="divider divider-vertical w-10" />
 				<input
 					type="number"
 					className="input"
-					placeholder='999 €'
+					placeholder="999 €"
 					onChange={(e: any) => setMaxPrice(parseFloat(e.target.value))}
 				/>
 			</div>

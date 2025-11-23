@@ -18,16 +18,20 @@ const SongReleaseItem = ({ song }: { song: Song }) => {
 	const del = async () => {
 		await artist.deleteSong(song.uuid);
 		window.location.reload();
-	}
+	};
 
 	return (
 		<tr>
 			<th>
-				<img src={song.cover} alt="Carátula de canción" className="w-12 h-12 rounded-box" />
+				<img
+					src={song.cover}
+					alt="Carátula de canción"
+					className="w-12 h-12 rounded-box"
+				/>
 			</th>
 			<th className="w-full">{song.title}</th>
 			<th>{durationToString(song.duration)}</th>
-			<th>{(new Date(song.releaseDate)).toLocaleDateString()}</th>
+			<th>{new Date(song.releaseDate).toLocaleDateString()}</th>
 			<th>
 				<div className="flex gap-2 w-fit">
 					<button className="btn btn-primary btn-square">
@@ -51,37 +55,36 @@ const SongReleaseItem = ({ song }: { song: Song }) => {
 				</div>
 			</th>
 		</tr>
-	)
-}
+	);
+};
 
 const SongReleases = () => {
 	const artist = useArtist();
 	const [songs, setSongs] = useState<Song[] | undefined>(undefined);
 
 	useEffect(() => {
-		artist.getSongs()
-			.then(s => setSongs(s));
+		artist.getSongs().then((s) => setSongs(s));
 	}, []);
 
-	if (songs === undefined) return <div className="skeleton w-full h-96" />
+	if (songs === undefined) return <div className="skeleton w-full h-96" />;
 	return (
 		<table className="table">
 			<thead>
-			<tr>
-				<th></th>
-				<th>Título</th>
-				<th>Duración</th>
-				<th>Fecha de publicación</th>
-				<th>Acciones</th>
-			</tr>
+				<tr>
+					<th></th>
+					<th>Título</th>
+					<th>Duración</th>
+					<th>Fecha de publicación</th>
+					<th>Acciones</th>
+				</tr>
 			</thead>
 			<tbody>
-			{
-				songs?.map((song, index) => <SongReleaseItem song={song} key={index} />)
-			}
+				{songs?.map((song, index) => (
+					<SongReleaseItem song={song} key={index} />
+				))}
 			</tbody>
 		</table>
-	)
-}
+	);
+};
 
 export default SongReleases;

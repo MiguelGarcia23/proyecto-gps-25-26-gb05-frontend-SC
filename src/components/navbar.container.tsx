@@ -71,7 +71,8 @@ const UserDropdown = () => {
 };
 
 const NotificationBell = () => {
-	const { notifications, fetchNotifications, deleteNotification } = useNotifications();
+	const { notifications, fetchNotifications, deleteNotification } =
+		useNotifications();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -103,8 +104,8 @@ const NotificationBell = () => {
 				{/* Badge de número de notificaciones */}
 				{notifications.length > 0 && (
 					<span className="badge badge-xs badge-primary absolute top-0 right-0">
-					{notifications.length}
-				</span>
+						{notifications.length}
+					</span>
 				)}
 			</button>
 
@@ -128,7 +129,12 @@ const NotificationBell = () => {
 									viewBox="0 0 24 24"
 									stroke="currentColor"
 								>
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M6 18L18 6M6 6l12 12"
+									/>
 								</svg>
 							</button>
 						</li>
@@ -138,7 +144,6 @@ const NotificationBell = () => {
 		</div>
 	);
 };
-
 
 const NavBar = () => {
 	const navigate = useNavigate();
@@ -178,11 +183,11 @@ const NavBar = () => {
 
 				<NotificationBell />
 
-				<div
-					role="button"
-					className="btn btn-ghost btn-circle"
-				>
-					<label htmlFor="cart-drawer" className="drawer-button m-0 pt-2 cursor-pointer">
+				<div role="button" className="btn btn-ghost btn-circle">
+					<label
+						htmlFor="cart-drawer"
+						className="drawer-button m-0 pt-2 cursor-pointer"
+					>
 						<div className="indicator">
 							<MdShoppingCart className="w-6 h-6" />
 							<span className="badge badge-accent badge-xs indicator-item">

@@ -39,15 +39,12 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 
 	// Función para obtener todas las reseñas
 	const getReviews = async (): Promise<Review[]> => {
-		const response = await fetch(
-			`${window.location.origin}/api/v1/reviews`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+		const response = await fetch(`${window.location.origin}/api/v1/reviews`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
+		});
 
 		if (!response.ok) {
 			const body = await response.json();
@@ -105,7 +102,7 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 	): Promise<void> => {
 		const newReview = {
 			...review,
-			product: review.productId
+			product: review.productId,
 		};
 
 		const response = await fetch(`${window.location.origin}/api/v1/reviews`, {

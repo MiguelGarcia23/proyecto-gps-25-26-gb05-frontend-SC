@@ -1,13 +1,13 @@
 import { createContext, type ReactNode, useContext, useState } from 'react';
-import { useAuth } from "./auth.context.tsx";
+import { useAuth } from './auth.context.tsx';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
 
 export interface Notification {
 	uuid: string;
 	message: string;
-	type?: "Song" | "Album";
-	item?: Song | Album ;
+	type?: 'Song' | 'Album';
+	item?: Song | Album;
 }
 
 interface NotificationContextType {
@@ -20,20 +20,27 @@ interface NotificationProviderProps {
 	children: ReactNode;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+	undefined,
+);
 
-export const NotificationProvider = ({ children }: NotificationProviderProps) => {
+export const NotificationProvider = ({
+	children,
+}: NotificationProviderProps) => {
 	const { session } = useAuth();
 	const [notifications, setNotifications] = useState<Notification[]>([]);
 
 	const fetchNotifications = async () => {
 		if (!session) return;
 
-		const res = await fetch(`${window.location.origin}/api/v1/users/notifications`, {
-			headers: {
-				Authorization: `Bearer ${session.access_token}`,
+		const res = await fetch(
+			`${window.location.origin}/api/v1/users/notifications`,
+			{
+				headers: {
+					Authorization: `Bearer ${session.access_token}`,
+				},
 			},
-		});
+		);
 
 		if (res.ok) {
 			setNotifications(await res.json());
@@ -46,9 +53,9 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
 		const res = await fetch(
 			`${window.location.origin}/api/v1/users/notifications/${uuid}`,
 			{
-				method: "DELETE",
+				method: 'DELETE',
 				headers: { Authorization: `Bearer ${session.access_token}` },
-			}
+			},
 		);
 
 		if (res.ok) {
@@ -68,7 +75,9 @@ export const NotificationProvider = ({ children }: NotificationProviderProps) =>
 export const useNotifications = () => {
 	const ctx = useContext(NotificationContext);
 	if (!ctx) {
-		throw new Error("useNotifications debe usarse dentro de NotificationProvider");
+		throw new Error(
+			'useNotifications debe usarse dentro de NotificationProvider',
+		);
 	}
 	return ctx;
 };

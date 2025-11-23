@@ -18,16 +18,20 @@ const AlbumReleaseItem = ({ album }: { album: Album }) => {
 	const del = async () => {
 		await artist.deleteAlbum(album.uuid);
 		window.location.reload();
-	}
+	};
 
 	return (
 		<tr>
 			<th>
-				<img src={album.cover} alt="Carátula de álbum" className="w-12 h-12 rounded-box" />
+				<img
+					src={album.cover}
+					alt="Carátula de álbum"
+					className="w-12 h-12 rounded-box"
+				/>
 			</th>
 			<th className="w-full">{album.title}</th>
 			<th>{durationToString(album.duration)}</th>
-			<th>{(new Date(album.releaseDate)).toLocaleDateString()}</th>
+			<th>{new Date(album.releaseDate).toLocaleDateString()}</th>
 			<th>
 				<div className="flex gap-2 w-fit">
 					<button className="btn btn-primary btn-square">
@@ -51,37 +55,36 @@ const AlbumReleaseItem = ({ album }: { album: Album }) => {
 				</div>
 			</th>
 		</tr>
-	)
-}
+	);
+};
 
 const AlbumReleases = () => {
 	const artist = useArtist();
 	const [albums, setAlbums] = useState<Album[] | undefined>(undefined);
 
 	useEffect(() => {
-		artist.getAlbums()
-			.then(a => setAlbums(a));
+		artist.getAlbums().then((a) => setAlbums(a));
 	}, []);
 
-	if (albums === undefined) return <div className="skeleton w-full h-96" />
+	if (albums === undefined) return <div className="skeleton w-full h-96" />;
 	return (
 		<table className="table">
 			<thead>
-			<tr>
-				<th></th>
-				<th>Título</th>
-				<th>Duración</th>
-				<th>Fecha de publicación</th>
-				<th>Acciones</th>
-			</tr>
+				<tr>
+					<th></th>
+					<th>Título</th>
+					<th>Duración</th>
+					<th>Fecha de publicación</th>
+					<th>Acciones</th>
+				</tr>
 			</thead>
 			<tbody>
-			{
-				albums?.map((album, index) => <AlbumReleaseItem album={album} key={index} />)
-			}
+				{albums?.map((album, index) => (
+					<AlbumReleaseItem album={album} key={index} />
+				))}
 			</tbody>
 		</table>
-	)
-}
+	);
+};
 
 export default AlbumReleases;
