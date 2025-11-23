@@ -4,11 +4,14 @@ import { useNavigate, useParams } from 'react-router';
 import { MdFavorite, MdPlaylistAdd } from 'react-icons/md';
 import SongPreviewButton from './song-preview-button.component.tsx';
 import AddToCart from '../../components/add-to-cart.component.tsx';
+import Reviews from '../../components/reviews.component.tsx';
+import { useWishlist } from '../../contexts/wishlist.context.tsx';
 
 const SongInfo = () => {
 	const { uuid } = useParams();
 	const song = useSong();
 	const navigate = useNavigate();
+	const wishlist = useWishlist();
 	const [songInfo, setSongInfo] = useState<Song | undefined>(undefined);
 
 	useEffect(() => {
@@ -60,7 +63,10 @@ const SongInfo = () => {
 							</div>
 							<div className="flex gap-2">
 								<SongPreviewButton song={songInfo} />
-								<button className="btn btn-square btn-secondary">
+								<button
+									className="btn btn-square btn-secondary"
+									onClick={() => wishlist.addToWishlist(songInfo?.uuid)}
+								>
 									<MdFavorite className="w-5 h-5" />
 								</button>
 								<button className="btn btn-square btn-neutral">
@@ -70,6 +76,7 @@ const SongInfo = () => {
 						</div>
 						<AddToCart item={songInfo} />
 					</div>
+					<Reviews type="Song" uuid={songInfo.uuid} />
 				</div>
 			)}
 		</div>

@@ -3,9 +3,9 @@ import {
 	type Order,
 	OrderStatusEnum,
 	useAdmin,
-} from '../../contexts/admin.context.tsx';
+} from '../../../contexts/pending/admin.context.tsx';
 import { FaChevronDown } from 'react-icons/fa';
-import { useAuth } from '../../contexts/auth.context.tsx';
+import { useAuth } from '../../../contexts/auth.context.tsx';
 
 const OrderStatusNames: Record<OrderStatusEnum, string> = {
 	[OrderStatusEnum.PENDING_PAYMENT]: 'Pending Payment',
@@ -42,7 +42,10 @@ function OrdersReview() {
 			) : (
 				<div>
 					<ul className="list bg-base-100 rounded-box shadow-md">
-						<li className="p-4 pb-2 text-4xl font-black tracking-wide flex flex-col gap-4" key={-1}>
+						<li
+							className="p-4 pb-2 text-4xl font-black tracking-wide flex flex-col gap-4"
+							key={-1}
+						>
 							Todos los pedidos realizados
 						</li>
 						{orders.map((pedido) => (

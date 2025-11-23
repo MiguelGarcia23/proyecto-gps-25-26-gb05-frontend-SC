@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { usePlaylist } from "../../contexts/playlist.context.tsx";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { usePlaylist } from '../../contexts/playlist.context.tsx';
+import { useNavigate } from 'react-router-dom';
 
 function CreatePlaylist() {
 	const { createPlaylist } = usePlaylist();
 	const navigate = useNavigate();
 
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [cover, setCover] = useState("");
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [cover, setCover] = useState('');
 	const [isPublic, setIsPublic] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -26,7 +26,7 @@ function CreatePlaylist() {
 		setLoading(false);
 
 		if (ok) {
-			navigate("/playlists");
+			navigate('/playlists');
 		}
 	};
 
@@ -88,12 +88,8 @@ function CreatePlaylist() {
 					</div>
 
 					{/* Botón enviar */}
-					<button
-						className="btn btn-primary mt-4"
-						type="submit"
-						disabled={loading}
-					>
-						{loading ? "Creando..." : "Crear playlist"}
+					<button className="btn btn-primary mt-4" type="submit" disabled={loading}>
+						{loading ? 'Creando...' : 'Crear playlist'}
 					</button>
 				</form>
 			</div>

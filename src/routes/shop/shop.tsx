@@ -7,7 +7,7 @@ import type { Album } from '../../contexts/album.context.tsx';
 import type { Song } from '../../contexts/song.context.tsx';
 import OrderFilter from './order-filter.component.tsx';
 import ShopItem from './shop-item.component.tsx';
-import { MdArrowBack, MdArrowRight } from 'react-icons/md';
+import { MdArrowBack, MdArrowLeft, MdArrowRight } from 'react-icons/md';
 
 export interface SearchItem {
 	type: 'album' | 'song';
@@ -66,10 +66,10 @@ const Shop = () => {
 		}
 
 		if (minReleaseDate) {
-			url.searchParams.append('minReleaseDate', minReleaseDate.toString());
+			url.searchParams.append('minReleaseDate', minReleaseDate.toISOString());
 		}
 		if (maxReleaseDate) {
-			url.searchParams.append('maxReleaseDate', maxReleaseDate.toString());
+			url.searchParams.append('maxReleaseDate', maxReleaseDate.toISOString());
 		}
 
 		url.searchParams.append('page', page.toString());
@@ -98,7 +98,7 @@ const Shop = () => {
 
 	return (
 		<div className="flex m-5 gap-5">
-			<div className="flex flex-col bg-base-100 p-5 rounded-box w-1/4 gap-2">
+			<div className="flex flex-col bg-base-100 p-5 rounded-box w-1/4 h-fit gap-2">
 				<GenreFilter genres={genres} setGenres={setGenres} />
 				<div className="divider" />
 				<PriceFilter
@@ -138,7 +138,7 @@ const Shop = () => {
 									className="btn btn-outline btn-square"
 									onClick={() => setPage(page - 1)}
 								>
-									<MdArrowBack className="w-5 h-5" />
+									<MdArrowLeft className="w-8 h-8" />
 								</button>
 							)}
 

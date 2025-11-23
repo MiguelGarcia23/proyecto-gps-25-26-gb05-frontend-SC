@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import { usePlaylist } from "../../contexts/playlist.context.tsx";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { usePlaylist } from '../../contexts/playlist.context.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function EditPlaylist() {
 	const { playlist, fetchPlaylist, removeSong } = usePlaylist();
 	const navigate = useNavigate();
 	const { uuid } = useParams<{ uuid: string }>();
 
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [cover, setCover] = useState("");
+	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+	const [cover, setCover] = useState('');
 	const [isPublic, setIsPublic] = useState(false);
 	const [loading, setLoading] = useState(false);
 
@@ -34,26 +34,29 @@ function EditPlaylist() {
 
 		setLoading(true);
 		try {
-			const res = await fetch(`${window.location.origin}/api/v1/playlists/${playlist.uuid}`, {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${playlist.authorUuid}`, // Ajusta si tienes session
+			const res = await fetch(
+				`${window.location.origin}/api/v1/playlists/${playlist.uuid}`,
+				{
+					method: 'PATCH',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${playlist.authorUuid}`, // Ajusta si tienes session
+					},
+					body: JSON.stringify({
+						title,
+						description,
+						cover,
+						public: isPublic,
+					}),
 				},
-				body: JSON.stringify({
-					title,
-					description,
-					cover,
-					public: isPublic,
-				}),
-			});
+			);
 
-			if (!res.ok) throw new Error("Error actualizando playlist");
+			if (!res.ok) throw new Error('Error actualizando playlist');
 			await fetchPlaylist(playlist.uuid);
-			alert("Playlist actualizada correctamente");
+			alert('Playlist actualizada correctamente');
 		} catch (error) {
 			console.error(error);
-			alert("No se pudo actualizar la playlist");
+			alert('No se pudo actualizar la playlist');
 		} finally {
 			setLoading(false);
 		}
@@ -108,7 +111,7 @@ function EditPlaylist() {
 				</label>
 
 				<button className="btn btn-primary mt-2" type="submit" disabled={loading}>
-					{loading ? "Guardando..." : "Guardar cambios"}
+					{loading ? 'Guardando...' : 'Guardar cambios'}
 				</button>
 			</form>
 
@@ -121,7 +124,10 @@ function EditPlaylist() {
 				) : (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 						{playlist.songs.map((song) => (
-							<div key={song.uuid} className="card bg-base-200 shadow-xl flex flex-col">
+							<div
+								key={song.uuid}
+								className="card bg-base-200 shadow-xl flex flex-col"
+							>
 								<figure>
 									<img
 										src={song.cover}

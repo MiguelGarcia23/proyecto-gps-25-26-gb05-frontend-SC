@@ -12,13 +12,23 @@ const ReleaseDateFilter = ({
 				<input
 					type="date"
 					className="input"
-					onChange={(e) => setMinReleaseDate(new Date(e.target.value))}
+					onChange={(e) => {
+						const date = new Date(e.target.value);
+						if (date.getFullYear() > 2000) {
+							setMinReleaseDate(new Date(e.target.value));
+						}
+					}}
 				/>
 				<div className="divider divider-vertical w-10" />
 				<input
 					type="date"
 					className="input"
-					onChange={(e) => setMaxReleaseDate(new Date(e.target.value))}
+					onChange={(e) => {
+						const date = new Date(e.target.value);
+						if (date.getFullYear() > 2000) {
+							setMaxReleaseDate(new Date(e.target.value));
+						}
+					}}
 				/>
 			</div>
 		</>

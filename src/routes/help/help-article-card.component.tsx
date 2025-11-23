@@ -1,5 +1,5 @@
 import React from 'react';
-import type { HelpCategory } from '../../contexts/help.context';
+import type { HelpCategory } from '../../contexts/help.context.tsx';
 
 interface HelpArticleCardProps {
 	uuid: string;

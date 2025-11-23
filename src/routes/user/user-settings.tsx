@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
-import { type Address, useUser } from '../../contexts/user.context.tsx';
+import { useUser } from '../../contexts/user.context.tsx';
 import { removeEmptyFields } from '../../lib/util.ts';
-import { MdClose, MdEdit } from 'react-icons/md';
+import { MdClose } from 'react-icons/md';
 import { useAuth } from '../../contexts/auth.context.tsx';
 import AddressBook from './settings/address-book.component.tsx';
 import { useToast } from '../../contexts/toast.context.tsx';

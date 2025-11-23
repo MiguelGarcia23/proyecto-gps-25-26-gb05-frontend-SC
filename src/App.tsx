@@ -16,6 +16,15 @@ import AlbumInfo from './routes/album/album-info.tsx';
 import { GenreProvider } from './contexts/genre.context.tsx';
 import UserLibrary from './routes/user/user-library.tsx';
 import Shop from './routes/shop/shop.tsx';
+import Checkout from './routes/checkout/checkout.tsx';
+import CheckoutSuccess from './routes/checkout/checkout-success.tsx';
+import CheckoutCancel from './routes/checkout/checkout-cancel.tsx';
+import ArtistDashboard from './routes/artist/artist-dashboard.tsx';
+import ArtistReleases from './routes/artist/artist-releases.tsx';
+import { ArtistProvider } from './contexts/artist.context.tsx';
+import { HelpProvider } from './contexts/help.context.tsx';
+import Help from './routes/help/help.tsx';
+import UserWishlist from './routes/user/user-wishlist.tsx';
 
 function App() {
 	return (
@@ -33,7 +42,15 @@ function App() {
 
 			<Route path="" element={<NavBarContainer />}>
 				<Route path="" element={<Index />} />
-				<Route path="help"></Route>
+				<Route
+					path="help"
+					element={
+						<HelpProvider>
+							<Help />
+						</HelpProvider>
+					}
+				/>
+
 				<Route
 					path="shop"
 					element={
@@ -42,6 +59,19 @@ function App() {
 						</GenreProvider>
 					}
 				/>
+
+				<Route
+					path="checkout"
+					element={
+						<OrderProvider>
+							<Outlet />
+						</OrderProvider>
+					}
+				>
+					<Route index element={<Checkout />} />
+					<Route path="success" element={<CheckoutSuccess />} />
+					<Route path="cancel" element={<CheckoutCancel />} />
+				</Route>
 
 				<Route path="song/:uuid" element={<SongInfo />} />
 				<Route path="album/:uuid" element={<AlbumInfo />} />
@@ -52,6 +82,7 @@ function App() {
 				>
 					<Route path="dashboard" element={<UserDashboard />}>
 						<Route path="for-you" />
+						<Route path="wishlist" element={<UserWishlist />} />
 						<Route path="library" element={<UserLibrary />} />
 						<Route
 							path="orders"
@@ -70,11 +101,28 @@ function App() {
 					</Route>
 				</Route>
 
-				<Route
-					path="artist"
-					element={<RequiredRoleContainer roles={['user', 'artist']} />}
-				>
-					<Route path="dashboard"></Route>
+				<Route path="artist" element={<RequiredRoleContainer roles={['artist']} />}>
+					<Route
+						path="dashboard"
+						element={
+							<ArtistProvider>
+								<ArtistDashboard />
+							</ArtistProvider>
+						}
+					>
+						<Route path="for-you" />
+						<Route
+							path="releases"
+							element={
+								<GenreProvider>
+									<ArtistReleases />
+								</GenreProvider>
+							}
+						/>
+						<Route path="payments" />
+						<Route path="stats" />
+						<Route path="profile" />
+					</Route>
 				</Route>
 			</Route>
 		</Routes>

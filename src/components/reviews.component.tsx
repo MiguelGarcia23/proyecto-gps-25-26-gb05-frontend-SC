@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useReviews, type Review } from '../../contexts/reviews.context.tsx';
-import ReviewCard from './Review-card.tsx';
+import { type Review, useReviews } from '../contexts/reviews.context.tsx';
+import ReviewCard from './review-card.component.tsx';
 
 interface ReviewsComponentProps {
-	productType: 'Song' | 'Album';
+	type: 'Song' | 'Album';
+	uuid: string;
 }
 
-const Reviews: React.FC<ReviewsComponentProps> = ({ productType }) => {
-	const { uuid } = useParams();
+const Reviews: React.FC<ReviewsComponentProps> = ({ type, uuid }) => {
 	const { getReviewsByProductId, addReview } = useReviews();
-
 	const [reviews, setReviews] = useState<Review[]>([]);
 	const [title, setTitle] = useState<string>();
 	const [rating, setRating] = useState<string>();
@@ -40,7 +39,7 @@ const Reviews: React.FC<ReviewsComponentProps> = ({ productType }) => {
 
 		try {
 			await addReview({
-				productType: productType,
+				productType: type,
 				productId: uuid,
 				rating: parseInt(rating),
 				title,

@@ -4,11 +4,7 @@ function Playlist() {
 	const { playlist, removeSong } = usePlaylist();
 
 	if (!playlist) {
-		return (
-			<div className="p-8 text-center text-lg">
-				Cargando playlist...
-			</div>
-		);
+		return <div className="p-8 text-center text-lg">Cargando playlist...</div>;
 	}
 
 	return (
@@ -33,16 +29,12 @@ function Playlist() {
 
 							<div className="card-body">
 								<h2 className="card-title">{item.title}</h2>
-								<p className="text-sm opacity-70">
-									Autor: {item.author.artistName}
-								</p>
-								<p className="text-sm opacity-70">
-									Duración: {item.duration}
-								</p>
+								<p className="text-sm opacity-70">Autor: {item.author.artistName}</p>
+								<p className="text-sm opacity-70">Duración: {item.duration}</p>
 
 								<button
 									className="btn btn-success mt-4"
-								 //TODO para Iván
+									//TODO para Iván
 								>
 									Reproducir
 								</button>

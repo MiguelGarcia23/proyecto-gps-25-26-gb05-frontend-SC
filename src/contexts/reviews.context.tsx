@@ -39,15 +39,12 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 
 	// Función para obtener todas las reseñas
 	const getReviews = async (): Promise<Review[]> => {
-		const response = await fetch(
-			`${window.location.origin}/api/v1/content/reviews`,
-			{
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+		const response = await fetch(`${window.location.origin}/api/v1/reviews`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
 			},
-		);
+		});
 
 		if (!response.ok) {
 			const body = await response.json();
@@ -60,7 +57,7 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 	// Función para obtener una reseña por su ID
 	const getReviewById = async (uuid: string): Promise<Review> => {
 		const response = await fetch(
-			`${window.location.origin}/api/v1/content/reviews/${uuid}`,
+			`${window.location.origin}/api/v1/reviews/${uuid}`,
 			{
 				method: 'GET',
 				headers: {
@@ -82,7 +79,7 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 		productUuid: string,
 	): Promise<Review[]> => {
 		const response = await fetch(
-			`${window.location.origin}/api/v1/content/reviews/product/${productUuid}`,
+			`${window.location.origin}/api/v1/reviews/product/${productUuid}`,
 			{
 				method: 'GET',
 				headers: {
@@ -105,6 +102,7 @@ export const ReviewsProvider: React.FC<ReviewsProviderProps> = ({
 	): Promise<void> => {
 		const newReview = {
 			...review,
+			product: review.productId,
 		};
 
 		const response = await fetch(`${window.location.origin}/api/v1/reviews`, {
