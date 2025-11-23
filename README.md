@@ -1,1 +1,1 @@
-HU de personalizar el perfil de un artista
+.
