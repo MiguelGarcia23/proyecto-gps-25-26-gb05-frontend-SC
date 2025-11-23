@@ -65,7 +65,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 		});
 
 		if (!res.ok) {
-			toast.showToast('No se pudo añadir a favoritos', 'error', 4000);
+			toast.showToast('No se pudo añadir a favoritos.', 'error', 4000);
 			return;
 		}
 
