@@ -1,4 +1,5 @@
 import { createContext, useContext, type ReactNode } from 'react';
+import { useAuth } from './auth.context.tsx';
 
 export interface Genre {
 	uuid: string;
@@ -7,11 +8,14 @@ export interface Genre {
 
 interface GenreContextType {
 	getGenres: () => Promise<Genre[]>;
+	postGenre: (name: string) => Promise<void>;
 }
 
 const GenreContext = createContext<GenreContextType | undefined>(undefined);
 
 export const GenreProvider = ({ children }: { children: ReactNode }) => {
+	const auth = useAuth();
+
 	const getGenres = async () => {
 		const response = await fetch(`${window.location.origin}/api/v1/genres`, {
 			method: 'GET',
@@ -28,10 +32,23 @@ export const GenreProvider = ({ children }: { children: ReactNode }) => {
 		return (await response.json()) as Genre[];
 	};
 
+	const postGenre = async (name: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/genres`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${auth.session?.access_token}`
+			},
+			body: JSON.stringify({ name })
+		})
+		if (!response.ok) throw new Error();
+	}
+
 	return (
 		<GenreContext.Provider
 			value={{
 				getGenres,
+				postGenre,
 			}}
 		>
 			{children}

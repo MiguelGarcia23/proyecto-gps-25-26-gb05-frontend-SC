@@ -25,6 +25,8 @@ import { ArtistProvider } from './contexts/artist.context.tsx';
 import { HelpProvider } from './contexts/help.context.tsx';
 import Help from './routes/help/help.tsx';
 import UserWishlist from './routes/user/user-wishlist.tsx';
+import AdminDashboard from './routes/admin/admin-dashboard.tsx';
+import AdminGenres from './routes/admin/admin-genres.tsx';
 
 function App() {
 	return (
@@ -37,7 +39,9 @@ function App() {
 			</Route>
 
 			<Route path="admin">
-				<Route path="dashboard"></Route>
+				<Route path="dashboard" element={<AdminDashboard />}>
+					<Route path="genres" element={<GenreProvider><AdminGenres /></GenreProvider>} />
+				</Route>
 			</Route>
 
 			<Route path="" element={<NavBarContainer />}>
