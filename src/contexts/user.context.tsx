@@ -9,7 +9,7 @@ import { useAuth } from './auth.context';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
 
-interface UserProfile {
+export interface UserProfile {
 	uuid: string;
 	username: string;
 	profileImg: string;
