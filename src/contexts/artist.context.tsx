@@ -2,6 +2,7 @@ import { createContext, type ReactNode, useContext } from 'react';
 import { useAuth } from './auth.context.tsx';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
+import type { Product } from './product.context.tsx';
 
 export interface Artist {
 	uuid: string;
@@ -9,6 +10,7 @@ export interface Artist {
 	profileImg: string;
 	bannerImg: string;
 	biography: string;
+	followers: number;
 }
 
 interface ArtistWalletWithdrawHistoryItem {
@@ -35,6 +37,15 @@ interface ArtistContextType {
 	uploadAlbum: (data: Partial<Album>, cover: File) => Promise<void>;
 	updateAlbum: (data: Partial<Album>) => Promise<void>;
 	deleteAlbum: (uuid: string) => Promise<void>;
+	getArtistById: (uuid: string) => Promise<Artist>;
+	getArtistByTokenSession: () => Promise<Artist>;
+	getSongsByArtistId: (uuid: string) => Promise<Song[]>;
+	getAlbumsByArtistId: (uuid: string) => Promise<Album[]>;
+	getProductsByArtistId: (uuid: string) => Promise<Product[]>;
+	updateArtistProfile: (data: Partial<Artist>, profileImg: File, bannerImg: File) => Promise<Artist>;
+	followByArtistId: (uuid: string) => Promise<void>;
+	unfollowByArtistId: (uuid: string) => Promise<void>;
+	isFollowingByArtistId: (uuid: string) => Promise<boolean>;
 }
 
 const ArtistContext = createContext<ArtistContextType | undefined>(undefined);
@@ -196,6 +207,192 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 	};
 
+	// Función para obtener un artista por su ID
+	const getArtistById = async (uuid: string): Promise<Artist> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Artist;
+	};
+
+	// Función para obtener un artista por su token de sesión
+	const getArtistByTokenSession = async (): Promise<Artist> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/profile`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+						Authorization: `Bearer ${auth.session?.access_token}`,
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Artist;
+	};
+
+	// Función para obtener las canciones de un artista por su ID
+	const getSongsByArtistId = async (uuid: string): Promise<Song[]> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/songs`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Song[];
+	};
+
+	// Función para obtener los álbumes de un artista por su ID
+	const getAlbumsByArtistId = async (uuid: string): Promise<Album[]> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/albums`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Album[];
+	};
+
+	// Función para obtener los productos de merchandising de un artista por su ID
+	const getProductsByArtistId = async (uuid: string): Promise<Product[]> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/products`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Product[];
+	};
+
+	// Función para modificar el perfil de un artista
+	const updateArtistProfile = async (data: Partial<Artist>, profileImg: File | null, bannerImg: File | null): Promise<Artist> => {
+		const formData = new FormData();
+		formData.append('artistName', data.artistName!);
+		if (profileImg) formData.append('profileImg', profileImg);
+		if (bannerImg) formData.append('bannerImg', bannerImg);
+		formData.append('biography', data.biography!);
+
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${data.uuid}`,
+			{
+				method: 'PUT',
+				headers: {
+					Authorization: `Bearer ${auth.session?.access_token}`,
+				},
+				body: formData,
+		},
+		);
+		if (!response.ok) throw new Error();
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as Artist;
+	};
+
+	// Función para seguir a un artista
+	const followByArtistId = async (uuid: string): Promise<void> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/follow`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+	};
+
+	// Función para dejar de seguir a un artista
+	const unfollowByArtistId = async (uuid: string): Promise<void> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/unfollow`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+	};
+
+	// Función para obtener si el usuario actual es seguidor del artista
+	const isFollowingByArtistId = async (uuid: string): Promise<boolean> => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/artists/${uuid}/is-following`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+						Authorization: `Bearer ${auth.session?.access_token}`,
+				},
+			},
+		);
+
+		if (!response.ok) {
+			const body = await response.json();
+			throw new Error(body.message);
+		}
+
+		return (await response.json()) as boolean;
+	};
+
 	return (
 		<ArtistContext.Provider
 			value={{
@@ -210,6 +407,15 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 				uploadAlbum,
 				updateAlbum,
 				deleteAlbum,
+				getArtistById,
+				getArtistByTokenSession,
+				getSongsByArtistId,
+				getAlbumsByArtistId,
+				getProductsByArtistId,
+				updateArtistProfile,
+				isFollowingByArtistId,
+				followByArtistId,
+				unfollowByArtistId,
 			}}
 		>
 			{children}

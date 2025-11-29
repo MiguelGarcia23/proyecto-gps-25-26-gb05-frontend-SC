@@ -1,13 +1,13 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useAuth } from './auth.context.tsx';
-import type { FullUser } from './user.context.tsx';
+import type { UserProfile } from './user.context.tsx';
 
 // Tipo de reseñas
 export interface Review {
 	uuid: string;
 	productType: 'Song' | 'Album';
 	productId: string;
-	user: FullUser;
+	user: UserProfile;
 	rating: number;
 	title?: string;
 	content?: string;
