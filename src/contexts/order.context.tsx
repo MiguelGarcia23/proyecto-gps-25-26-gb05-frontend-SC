@@ -46,6 +46,7 @@ interface OrderContextType {
 	getOrders: () => Promise<Order[]>;
 	getOrder: (uuid: string) => Promise<Order>;
 	createOrder: (addressUuid: string) => Promise<void>;
+	update: (uuid: string, status: OrderStatus) => Promise<void>;
 }
 
 const OrderContext = createContext<OrderContextType | undefined>(undefined);
@@ -108,12 +109,25 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
 		window.location = body.redirectUrl;
 	};
 
+	const update = async (uuid: string, status: OrderStatus) => {
+		const response = await fetch(`${window.location.origin}/api/v1/orders/${uuid}`, {
+			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ status })
+		})
+		if (!response.ok) throw new Error();
+	}
+
 	return (
 		<OrderContext.Provider
 			value={{
 				getOrders,
 				getOrder,
 				createOrder,
+				update,
 			}}
 		>
 			{children}

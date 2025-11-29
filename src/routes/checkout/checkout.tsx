@@ -41,12 +41,19 @@ const Checkout = () => {
 	const navigate = useNavigate();
 	const [selectedAddress, setSelectedAddress] = useState<string>('0');
 
+	const shipping = () => {
+		return cart.populatedCart!.some(item => item.format === undefined || item.format !== 'digital') ? 5 : 0;
+	}
+
 	const totalPrice = () => {
-		const sum = cart.populatedCart!.reduce((prev, curr) => {
-			prev.price += curr.price * curr.quantity;
-			return prev;
-		});
-		return (sum.price / 100).toFixed(2);
+		if (cart.populatedCart!.length === 1) {
+			return (cart.populatedCart![0].price * cart.populatedCart![0].quantity / 100 + shipping()).toFixed(2);
+		}
+		let sum = 0;
+		for (const item of cart.populatedCart!) {
+			sum += item.price * item.quantity;
+		}
+		return (sum / 100 + shipping()).toFixed(2);
 	};
 
 	if (cart.cart.length == 0) navigate('/');
@@ -67,6 +74,10 @@ const Checkout = () => {
 					<CheckoutItem item={item} key={index} />
 				))}
 				<div className="divider divider-vertical p-0 m-0" />
+				<div className="flex gap-2 justify-between items-center">
+					<p>Envío</p>
+					<p className="text-xl font-bold">{shipping() === 0 ? 'Gratis' : shipping() + ' €'}</p>
+				</div>
 				<div className="flex gap-2 justify-between">
 					<p>Total</p>
 					<p className="text-3xl font-bold">{totalPrice()} €</p>

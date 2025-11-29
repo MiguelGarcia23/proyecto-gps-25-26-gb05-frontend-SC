@@ -6,12 +6,14 @@ import SongPreviewButton from './song-preview-button.component.tsx';
 import AddToCart from '../../components/add-to-cart.component.tsx';
 import Reviews from '../../components/reviews.component.tsx';
 import { useWishlist } from '../../contexts/wishlist.context.tsx';
+import { useToast } from '../../contexts/toast.context.tsx';
 
 const SongInfo = () => {
 	const { uuid } = useParams();
 	const song = useSong();
 	const navigate = useNavigate();
 	const wishlist = useWishlist();
+	const toast = useToast();
 	const [songInfo, setSongInfo] = useState<Song | undefined>(undefined);
 
 	useEffect(() => {
@@ -65,7 +67,10 @@ const SongInfo = () => {
 								<SongPreviewButton song={songInfo} />
 								<button
 									className="btn btn-square btn-secondary"
-									onClick={() => wishlist.addToWishlist(songInfo?.uuid)}
+									onClick={async () => {
+										await wishlist.add(songInfo?.uuid, 'song');
+										toast.showToast('Añadido a la lista de deseados', 'success', 5000);
+									}}
 								>
 									<MdFavorite className="w-5 h-5" />
 								</button>

@@ -7,20 +7,19 @@ import {
 } from 'react';
 import { useAuth } from './auth.context.tsx';
 import { useToast } from './toast.context.tsx';
+import type { Song } from './song.context.tsx';
+import type { Merch } from './merch.context.tsx';
+import type { Album } from './album.context.tsx';
 
 export interface WishlistItem {
-	uuid: string;
-	title: string;
-	img: string;
-	type: 'song' | 'album' | 'product';
-	price: number;
+	type: 'song' | 'album' | 'merch',
+	item: Song | Album | Merch
 }
 
 interface WishlistContextType {
-	wishlist: WishlistItem[];
-	fetchWishlist: () => Promise<void>;
-	addToWishlist: (uuid: string) => Promise<void>;
-	removeFromWishlist: (uuid: string) => Promise<void>;
+	get: () => Promise<WishlistItem[]>,
+	add: (uuid: string, type: 'song' | 'album' | 'merch') => Promise<void>,
+	remove: (uuid: string) => Promise<void>
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(
@@ -28,75 +27,51 @@ const WishlistContext = createContext<WishlistContextType | undefined>(
 );
 
 export const WishlistProvider = ({ children }: { children: ReactNode }) => {
-	const { session } = useAuth();
-	const toast = useToast();
-	const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
+	const auth = useAuth();
 
-	const fetchWishlist = async () => {
-		if (!session) return;
-
-		const res = await fetch(`${window.location.origin}/api/v1/wishlist`, {
+	const get = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/users/wishlist`, {
+			method: 'GET',
 			headers: {
-				Authorization: `Bearer ${session.access_token}`,
-			},
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
 		});
+		if (!response.ok) throw new Error();
 
-		if (!res.ok) {
-			toast.showToast('Error al cargar la lista de deseados', 'error', 4000);
-			return;
-		}
+		return (await response.json()) as WishlistItem[];
+	}
 
-		const data = await res.json();
-		setWishlist(data);
-	};
-
-	useEffect(() => {
-		if (session) fetchWishlist();
-	}, [session]);
-
-	const addToWishlist = async (uuid: string) => {
-		const res = await fetch(`${window.location.origin}/api/v1/wishlist`, {
-			method: 'POST',
+	const add = async (uuid: string, type: 'song' | 'album' | 'merch') => {
+		const response = await fetch(`${window.location.origin}/api/v1/users/wishlist`, {
+			method: 'PUT',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${session?.access_token}`,
+				Authorization: `Bearer ${auth.session?.access_token}`,
+				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ uuid }),
+			body: JSON.stringify({
+				type,
+				uuid
+			})
 		});
+		if (!response.ok) throw new Error();
+	}
 
-		if (!res.ok) {
-			toast.showToast('No se pudo añadir a favoritos.', 'error', 4000);
-			return;
-		}
-
-		await fetchWishlist();
-		toast.showToast('Añadido a tu lista de deseados', 'success', 3000);
-	};
-
-	const removeFromWishlist = async (uuid: string) => {
-		const res = await fetch(`${window.location.origin}/api/v1/wishlist/${uuid}`, {
+	const remove = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/users/wishlist/${uuid}`, {
 			method: 'DELETE',
 			headers: {
-				Authorization: `Bearer ${session?.access_token}`,
-			},
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
 		});
-
-		if (!res.ok) {
-			toast.showToast('No se pudo eliminar', 'error', 4000);
-			return;
-		}
-
-		await fetchWishlist();
-		toast.showToast('Eliminado de tu lista', 'success', 3000);
-	};
+		if (!response.ok) throw new Error();
+	}
 
 	return (
 		<WishlistContext.Provider
 			value={{
-				wishlist,
-				fetchWishlist,
-				addToWishlist,
-				removeFromWishlist,
+				get,
+				add,
+				remove,
 			}}
 		>
 			{children}

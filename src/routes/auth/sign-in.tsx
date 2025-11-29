@@ -28,6 +28,7 @@ function SignIn() {
 			await auth.signIn(data.email, data.password);
 
 			navigate('/dashboard');
+			window.location.reload();
 		} catch (error: any) {
 			if (error.message.includes('Invalid login credentials')) {
 				toast.showToast(

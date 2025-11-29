@@ -20,7 +20,7 @@ const OrderItemCard = ({ item }: { item: OrderItem }) => {
 			</div>
 			<div className="flex flex-col items-start justify-start">
 				<p className="text-lg">{item.title}</p>
-				<span className="badge badge-primary">{item.format}</span>
+				<span className="badge badge-primary">{item.format ? item.format : 'Merchandising'}</span>
 			</div>
 			<div className="flex flex-col items-end justify-start">
 				<p className="text-lg font-bold">{(item.price / 100).toFixed(2)} €</p>

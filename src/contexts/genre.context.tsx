@@ -9,14 +9,18 @@ export interface Genre {
 interface GenreContextType {
 	getGenres: () => Promise<Genre[]>;
 	postGenre: (name: string) => Promise<void>;
+	deleteGenre: (uuid: string) => Promise<void>;
 }
 
 const GenreContext = createContext<GenreContextType | undefined>(undefined);
 
 export const GenreProvider = ({ children }: { children: ReactNode }) => {
 	const auth = useAuth();
+	let genres: Genre[] | undefined = undefined;
 
 	const getGenres = async () => {
+		if (genres) return genres;
+
 		const response = await fetch(`${window.location.origin}/api/v1/genres`, {
 			method: 'GET',
 			headers: {
@@ -28,8 +32,8 @@ export const GenreProvider = ({ children }: { children: ReactNode }) => {
 			const body = await response.json();
 			throw new Error(body.message);
 		}
-
-		return (await response.json()) as Genre[];
+		genres = (await response.json()) as Genre[];
+		return genres;
 	};
 
 	const postGenre = async (name: string) => {
@@ -44,11 +48,22 @@ export const GenreProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 	}
 
+	const deleteGenre = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/genres/${uuid}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		})
+		if (!response.ok) throw new Error();
+	}
+
 	return (
 		<GenreContext.Provider
 			value={{
 				getGenres,
 				postGenre,
+				deleteGenre
 			}}
 		>
 			{children}

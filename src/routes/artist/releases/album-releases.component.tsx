@@ -10,6 +10,9 @@ import {
 	MdTrolley,
 } from 'react-icons/md';
 import { useEffect, useState } from 'react';
+import AlbumUpload from './album-upload.component.tsx';
+import AlbumUpdate from './album-update.component.tsx';
+import MerchUpload from './merch-upload.component.tsx';
 
 const AlbumReleaseItem = ({ album }: { album: Album }) => {
 	const navigate = useNavigate();
@@ -37,7 +40,10 @@ const AlbumReleaseItem = ({ album }: { album: Album }) => {
 					<button className="btn btn-primary btn-square">
 						<MdPlayArrow className="w-5 h-5" />
 					</button>
-					<button className="btn btn-accent btn-square">
+					<button
+						className="btn btn-accent btn-square"
+						onClick={() => (document.getElementById(`album-update-modal-${album.uuid}`) as any).showModal()}
+					>
 						<MdEdit className="w-5 h-5" />
 					</button>
 					<button
@@ -46,12 +52,20 @@ const AlbumReleaseItem = ({ album }: { album: Album }) => {
 					>
 						<MdStore className="w-5 h-5" />
 					</button>
-					<button className="btn btn-warning btn-square">
+					<button
+						className="btn btn-warning btn-square"
+						onClick={() => {
+							(document.getElementById(`merch-upload-modal-${album.uuid}`) as any).showModal();
+						}}
+					>
 						<MdTrolley className="w-5 h-5" />
 					</button>
 					<button className="btn btn-error btn-square" onClick={del}>
 						<MdDelete className="w-5 h-5" />
 					</button>
+
+					<AlbumUpdate album={album} />
+					<MerchUpload referenceType="album" reference={album} />
 				</div>
 			</th>
 		</tr>
@@ -71,7 +85,7 @@ const AlbumReleases = () => {
 		<table className="table">
 			<thead>
 				<tr>
-					<th></th>
+					<th>Carátula</th>
 					<th>Título</th>
 					<th>Duración</th>
 					<th>Fecha de publicación</th>

@@ -32,7 +32,7 @@ const SongUpload = () => {
 	const [cover, setCover] = useState();
 
 	useEffect(() => {
-		genre.getGenres().then((g) => setAvailableGenres(g));
+		genre.getGenres().then(g => setAvailableGenres(g));
 	}, []);
 
 	const onSubmit: SubmitHandler<SongUploadForm> = async (data) => {
@@ -53,10 +53,10 @@ const SongUpload = () => {
 				genres: selectedGenres.map((g) => g.uuid) as unknown as Genre[],
 				featuring: [],
 				pricing: {
-					cd: data.pricingCd * 100,
-					digital: data.pricingDigital * 100,
-					cassette: data.pricingCassette * 100,
-					vinyl: data.pricingVinyl * 100,
+					cd: Math.round(data.pricingCd * 100),
+					digital: Math.round(data.pricingDigital * 100),
+					cassette: Math.round(data.pricingCassette * 100),
+					vinyl: Math.round(data.pricingVinyl * 100),
 				},
 			},
 			cover!,

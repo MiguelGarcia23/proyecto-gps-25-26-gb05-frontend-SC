@@ -54,6 +54,15 @@ const UserDropdown = () => {
 							Panel de artista
 						</a>
 					)}
+					{user.user?.role === 'admin' && (
+						<a
+							className="justify-start gap-6 text-sm w-full"
+							onClick={() => navigate('/admin/dashboard')}
+						>
+							<MdMusicNote className="w-6 h-6" />
+							Panel de administrador
+						</a>
+					)}
 					<a
 						className="justify-start gap-6 text-sm w-full"
 						onClick={async () => {

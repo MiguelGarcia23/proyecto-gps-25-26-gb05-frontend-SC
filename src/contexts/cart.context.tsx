@@ -7,7 +7,7 @@ import {
 } from 'react';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
-import type { Product } from './product.context.tsx';
+import type { Merch } from './merch.context.tsx';
 import CartDrawer from '../components/cart-drawer.component.tsx';
 import { useToast } from './toast.context.tsx';
 
@@ -29,7 +29,7 @@ interface CartContextType {
 	cart: CartItem[];
 	populatedCart: CartItemPopulated[] | undefined;
 	add: (
-		item: Song | Album | Product,
+		item: Song | Album | Merch,
 		format?: 'cd' | 'vinyl' | 'cassette' | 'digital',
 	) => void;
 	remove: (item: CartItem) => void;
@@ -80,7 +80,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 			result.push({
 				...item,
 				title: body.title,
-				author: body.author.artistName,
+				author: item.type === 'merch' ? body.reference.author.artistName : body.author.artistName,
 				cover: item.type === 'merch' ? body.previews[0] : body.cover,
 				price: item.type === 'merch' ? body.price : body.pricing[item.format!],
 			});
@@ -89,7 +89,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	const add = async (
-		item: Song | Album | Product,
+		item: Song | Album | Merch,
 		format?: 'cd' | 'vinyl' | 'cassette' | 'digital',
 	) => {
 		const cartItem: CartItem = {

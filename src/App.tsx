@@ -27,6 +27,11 @@ import Help from './routes/help/help.tsx';
 import UserWishlist from './routes/user/user-wishlist.tsx';
 import AdminDashboard from './routes/admin/admin-dashboard.tsx';
 import AdminGenres from './routes/admin/admin-genres.tsx';
+import ArtistPayments from './routes/artist/artist-payments.tsx';
+import ArtistStats from './routes/artist/artist-stats.tsx';
+import Dashboard from './routes/auth/dashboard.tsx';
+import MerchInfo from './routes/merch/merch-info.tsx';
+import AdminOrders from './routes/admin/admin-orders.tsx';
 
 function App() {
 	return (
@@ -37,10 +42,12 @@ function App() {
 				<Route path="sign-up" element={<SignUp />} />
 				<Route path="sign-in" element={<SignIn />} />
 			</Route>
+			<Route path="dashboard" element={<Dashboard />} />
 
-			<Route path="admin">
+			<Route path="admin" element={<RequiredRoleContainer roles={['admin']} />}>
 				<Route path="dashboard" element={<AdminDashboard />}>
 					<Route path="genres" element={<GenreProvider><AdminGenres /></GenreProvider>} />
+					<Route path="orders" element={<OrderProvider><AdminOrders /></OrderProvider>} />
 				</Route>
 			</Route>
 
@@ -79,6 +86,7 @@ function App() {
 
 				<Route path="song/:uuid" element={<SongInfo />} />
 				<Route path="album/:uuid" element={<AlbumInfo />} />
+				<Route path="merch/:uuid" element={<MerchInfo />} />
 
 				<Route
 					path="user"
@@ -123,8 +131,8 @@ function App() {
 								</GenreProvider>
 							}
 						/>
-						<Route path="payments" />
-						<Route path="stats" />
+						<Route path="payments" element={<ArtistPayments />} />
+						<Route path="stats" element={<ArtistStats />} />
 						<Route path="profile" />
 					</Route>
 				</Route>

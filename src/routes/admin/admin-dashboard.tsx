@@ -1,8 +1,11 @@
 import { Outlet, useNavigate } from 'react-router';
-import { MdMusicNote } from 'react-icons/md';
+import { MdLocalShipping, MdLogout, MdMusicNote } from 'react-icons/md';
+import { useAuth } from '../../contexts/auth.context.tsx';
 
 const MenuBar = () => {
 	const navigate = useNavigate();
+	const auth = useAuth();
+
 	return (
 		<ul className="menu bg-base-200 rounded-box w-56 h-fit">
 			<li>
@@ -12,6 +15,27 @@ const MenuBar = () => {
 				>
 					<MdMusicNote />
 					Géneros
+				</a>
+			</li>
+			<li>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/admin/dashboard/orders')}
+				>
+					<MdLocalShipping />
+					Pedidos
+				</a>
+			</li>
+			<li>
+				<a
+					className="text-lg"
+					onClick={async () => {
+						await auth.signOut();
+						navigate('/');
+					}}
+				>
+					<MdLogout />
+					Cerrar sesión
 				</a>
 			</li>
 		</ul>
