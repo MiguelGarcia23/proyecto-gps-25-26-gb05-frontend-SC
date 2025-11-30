@@ -3,6 +3,7 @@ import { useAuth } from './auth.context.tsx';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
 import type { Merch } from './merch.context.tsx';
+import type { User } from './user.context.tsx';
 
 export interface Artist {
 	uuid: string;
@@ -10,7 +11,7 @@ export interface Artist {
 	profileImg: string;
 	bannerImg: string;
 	biography: string;
-	followers: number;
+	followers: User[];
 }
 
 interface ArtistWalletWithdrawHistoryItem {

@@ -173,7 +173,7 @@ const ArtistProfile = () => {
 									</button>
 								)}
 							</div>
-							<p>{info.followers} seguidores</p>
+							<p>{info.followers.length} seguidores</p>
 						</div>
 					</div>
 				</div>
