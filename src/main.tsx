@@ -16,6 +16,7 @@ import Player from './components/player.tsx';
 import { NotificationProvider } from './contexts/notification.context.tsx';
 import { PlaylistProvider } from './contexts/playlist.context.tsx';
 import { MerchProvider } from './contexts/merch.context.tsx';
+import { ArtistStatsProvider } from './contexts/artist.stats.context.tsx';
 
 // @ts-ignore
 const Providers = ({ providers, children }) => {
@@ -52,7 +53,8 @@ createRoot(document.getElementById('root')!).render(
 				<ReviewsProvider />,
 				<PlaylistProvider />,
 				<NotificationProvider />,
-				<MerchProvider />
+				<MerchProvider />,
+				<ArtistStatsProvider/>
 			]}>
 				<div className="min-h-screen bg-base-300">
 					<App />
