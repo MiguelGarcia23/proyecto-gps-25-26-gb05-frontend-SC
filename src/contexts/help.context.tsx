@@ -45,7 +45,7 @@ export const HelpProvider: React.FC<HelpProviderProps> = ({ children }) => {
 	// Función para obtener todos los artículos de ayuda
 	const getHelpArticles = async (): Promise<HelpArticle[]> => {
 		const response = await fetch(
-			`${window.location.origin}/api/v1/content/help`,
+			`${window.location.origin}/api/v1/help`,
 			{
 				method: 'GET',
 				headers: {
@@ -65,7 +65,7 @@ export const HelpProvider: React.FC<HelpProviderProps> = ({ children }) => {
 	// Función para obtener un artículo de ayuda por su ID
 	const getHelpArticleById = async (uuid: string): Promise<HelpArticle> => {
 		const response = await fetch(
-			`${window.location.origin}/api/v1/content/help/${uuid}`,
+			`${window.location.origin}/api/v1/help/${uuid}`,
 			{
 				method: 'GET',
 				headers: {

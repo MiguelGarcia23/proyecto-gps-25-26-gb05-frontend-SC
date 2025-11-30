@@ -1,18 +1,6 @@
-import { type LibraryItem, useUser } from '../../contexts/user.context.tsx';
-import { useEffect, useState } from 'react';
-import {
-	MdArrowDownward,
-	MdArrowDropDown,
-	MdDownload,
-	MdPlayArrow,
-	MdPlaylistAdd,
-	MdQueueMusic,
-	MdQueuePlayNext,
-} from 'react-icons/md';
-import { usePlayer } from '../../contexts/player.context.tsx';
-import { type Song, useSong } from '../../contexts/song.context.tsx';
-import { useNavigate } from 'react-router';
+import { useState } from 'react';
 import UserDigitalProducts from './library/digital-products.component.tsx';
+import { MdAdd } from 'react-icons/md';
 
 const UserLibrary = () => {
 	const [currentTab, setCurrentTab] = useState('library');
@@ -23,7 +11,12 @@ const UserLibrary = () => {
 
 	return (
 		<div className="flex flex-col gap-2">
-			<h1 className="text-3xl font-bold">Biblioteca</h1>
+			<div className="flex justify-between">
+				<h1 className="text-3xl font-bold">Biblioteca</h1>
+				<button className="btn btn-primary">
+					<MdAdd /> Crear lista de reproducción
+				</button>
+			</div>
 			<div className="tabs tabs-box">
 				<input
 					type="radio"

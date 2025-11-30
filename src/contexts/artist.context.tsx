@@ -2,7 +2,7 @@ import { createContext, type ReactNode, useContext } from 'react';
 import { useAuth } from './auth.context.tsx';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
-import type { Product } from './product.context.tsx';
+import type { Merch } from './merch.context.tsx';
 
 export interface Artist {
 	uuid: string;
@@ -41,11 +41,18 @@ interface ArtistContextType {
 	getArtistByTokenSession: () => Promise<Artist>;
 	getSongsByArtistId: (uuid: string) => Promise<Song[]>;
 	getAlbumsByArtistId: (uuid: string) => Promise<Album[]>;
-	getProductsByArtistId: (uuid: string) => Promise<Product[]>;
+	getProductsByArtistId: (uuid: string) => Promise<Merch[]>;
 	updateArtistProfile: (data: Partial<Artist>, profileImg: File, bannerImg: File) => Promise<Artist>;
 	followByArtistId: (uuid: string) => Promise<void>;
 	unfollowByArtistId: (uuid: string) => Promise<void>;
 	isFollowingByArtistId: (uuid: string) => Promise<boolean>;
+
+	getByUuid: (uuid: string) => Promise<Artist>;
+	getSongsByUuid: (uuid: string) => Promise<Song[]>;
+	getAlbumsByUuid: (uuid: string) => Promise<Album[]>;
+	getMerchByUuid: (uuid: string) => Promise<Merch[]>;
+	follow: (uuid: string) => Promise<void>;
+	unfollow: (uuid: string) => Promise<void>;
 }
 
 const ArtistContext = createContext<ArtistContextType | undefined>(undefined);
@@ -289,7 +296,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	// Función para obtener los productos de merchandising de un artista por su ID
-	const getProductsByArtistId = async (uuid: string): Promise<Product[]> => {
+	const getProductsByArtistId = async (uuid: string): Promise<Merch[]> => {
 		const response = await fetch(
 			`${window.location.origin}/api/v1/artists/${uuid}/products`,
 			{
@@ -305,7 +312,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 			throw new Error(body.message);
 		}
 
-		return (await response.json()) as Product[];
+		return (await response.json()) as Merch[];
 	};
 
 	// Función para modificar el perfil de un artista
@@ -393,6 +400,58 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		return (await response.json()) as boolean;
 	};
 
+	const getByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Artist;
+	};
+
+	const getSongsByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/songs`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Song[];
+	}
+
+	const getAlbumsByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/albums`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Album[];
+	}
+
+	const getMerchByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/products`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Merch[];
+	}
+
+	const follow = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/follow`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+	}
+
+	const unfollow = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/unfollow`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+	}
+
 	return (
 		<ArtistContext.Provider
 			value={{
@@ -416,6 +475,13 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 				isFollowingByArtistId,
 				followByArtistId,
 				unfollowByArtistId,
+
+				getByUuid,
+				getSongsByUuid,
+				getAlbumsByUuid,
+				getMerchByUuid,
+				follow,
+				unfollow,
 			}}
 		>
 			{children}

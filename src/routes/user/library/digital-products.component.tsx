@@ -95,6 +95,16 @@ const DigitalItem = ({ item }: { item: LibraryItem }) => {
 						</details>
 					</div>
 				)}
+				{item.type === 'album' && (
+					<div className="flex flex-col gap-2">
+						<button
+							className="btn btn-primary"
+							onClick={() => navigate(`/user/dashboard/library/album/${item.item.uuid}`)}
+						>
+							Ver más
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);

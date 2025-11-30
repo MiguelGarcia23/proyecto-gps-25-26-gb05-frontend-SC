@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import  { type Artist, useArtist } from '../../contexts/artist.context.tsx';
 import { useNavigate } from 'react-router';
 
-const CustomizeArtistProfile: React.FC = () => {
+const ArtistEditProfile: React.FC = () => {
 
 	const navigate = useNavigate();
 
@@ -30,13 +30,13 @@ const CustomizeArtistProfile: React.FC = () => {
 	}, [artist]);
 
 	// Maneja la subida de archivos para el banner
-	const handleBannerUpload = (e) => {
+	const handleBannerUpload = (e: any) => {
 		const file = e.target.files[0];
 		if (file) setBannerImg(file);
 	};
 
 	// Maneja la subida de archivos para la imagen de perfil
-	const handleProfileUpload = (e) => {
+	const handleProfileUpload = (e: any) => {
 		const file = e.target.files[0];
 		if (file) setProfileImg(file);
 	};
@@ -51,7 +51,7 @@ const CustomizeArtistProfile: React.FC = () => {
 					...artist,
 					artistName,
 					biography,
-				}, profileImg, bannerImg);
+				}, profileImg!, bannerImg!);
 				setMessage('Perfil de artista actualizado correctamente');
 			}
 		} catch (err) {
@@ -63,9 +63,9 @@ const CustomizeArtistProfile: React.FC = () => {
 	};
 
 	return (
-		<div className="max-w-4xl mx-auto p-6">
+		<div className="max-w-4xl mx-auto">
 			<h1 className="text-3xl font-bold mb-6">
-				Editar Perfil del Artista
+				Editar Perfil
 			</h1>
 
 			<div className="card bg-base-100 shadow-xl p-6 space-y-8">
@@ -172,4 +172,4 @@ const CustomizeArtistProfile: React.FC = () => {
 	);
 }
 
-export default CustomizeArtistProfile;
+export default ArtistEditProfile;

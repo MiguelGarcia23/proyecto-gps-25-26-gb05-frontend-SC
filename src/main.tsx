@@ -38,7 +38,6 @@ const Providers = ({ providers, children }) => {
 }
 
 createRoot(document.getElementById('root')!).render(
-	<StrictMode>
 		<BrowserRouter>
 			<Providers providers={[
 				<ToastProvider />,
@@ -61,5 +60,4 @@ createRoot(document.getElementById('root')!).render(
 				</div>
 			</Providers>
 		</BrowserRouter>
-	</StrictMode>,
 );

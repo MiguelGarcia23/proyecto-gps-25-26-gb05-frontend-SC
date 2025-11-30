@@ -47,7 +47,9 @@ const MerchInfo = () => {
 
 				<div className="flex flex-col gap-2 grow">
 					<h1 className="font-bold text-4xl">{item.title}</h1>
-					<h1 className="text-xl">{item.reference.author.artistName}</h1>
+					<h1 className="cursor-pointer text-xl" onClick={() => navigate(`/profile/artist/${item?.reference.author.uuid}`)}>
+						{item.reference.author.artistName}
+					</h1>
 					<span className="badge badge-primary">{MerchTypeMapping[item.type]}</span>
 					<p className="grow">{item.description}</p>
 					<div className="flex gap-2">

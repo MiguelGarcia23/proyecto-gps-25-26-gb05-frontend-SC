@@ -130,7 +130,9 @@ const AlbumInfo = () => {
 						<div className="grow flex flex-col justify-between">
 							<div className="flex flex-col gap-1">
 								<h1 className="text-2xl">{albumInfo.title}</h1>
-								<p>{albumInfo.author.artistName}</p>
+								<p className="cursor-pointer" onClick={() => navigate(`/profile/artist/${albumInfo?.author.uuid}`)}>
+									{albumInfo.author.artistName}
+								</p>
 								<div className="flex gap-2">
 									{albumInfo.genres.map((genre) => (
 										<span className="badge badge-primary">{genre.name}</span>

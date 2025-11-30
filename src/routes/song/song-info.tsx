@@ -38,7 +38,9 @@ const SongInfo = () => {
 						<div className="grow flex flex-col justify-between">
 							<div className="flex flex-col gap-1">
 								<h1 className="text-2xl">{songInfo.title}</h1>
-								<p>{songInfo.author.artistName}</p>
+								<p className="cursor-pointer" onClick={() => navigate(`/profile/artist/${songInfo?.author.uuid}`)}>
+									{songInfo.author.artistName}
+								</p>
 								{songInfo.featuring.length > 0 && (
 									<p>feat. {songInfo.featuring.map((f) => f.artistName)}</p>
 								)}

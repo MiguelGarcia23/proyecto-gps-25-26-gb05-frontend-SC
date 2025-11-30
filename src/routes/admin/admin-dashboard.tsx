@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router';
-import { MdLocalShipping, MdLogout, MdMusicNote } from 'react-icons/md';
+import { MdHelp, MdLocalShipping, MdLogout, MdMusicNote } from 'react-icons/md';
 import { useAuth } from '../../contexts/auth.context.tsx';
 
 const MenuBar = () => {
@@ -24,6 +24,15 @@ const MenuBar = () => {
 				>
 					<MdLocalShipping />
 					Pedidos
+				</a>
+			</li>
+			<li>
+				<a
+					className="text-lg"
+					onClick={() => navigate('/admin/dashboard/help')}
+				>
+					<MdHelp />
+					Artículos de ayuda
 				</a>
 			</li>
 			<li>
