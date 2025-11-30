@@ -136,7 +136,6 @@ export const HelpProvider: React.FC<HelpProviderProps> = ({ children }) => {
 			{
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: `Bearer ${auth.session?.access_token}`,
 				},
 			},
@@ -147,7 +146,7 @@ export const HelpProvider: React.FC<HelpProviderProps> = ({ children }) => {
 			throw new Error(body.message);
 		}
 
-		return (await response.json()) as boolean;
+		return response.status === 204;
 	};
 
 	return (

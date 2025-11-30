@@ -7,7 +7,7 @@ import {
 } from '../../../contexts/help.context.tsx';
 
 interface CreateEditArticleProps {
-	article?: HelpArticle; // Si existe, estamos editando
+	article: HelpArticle | null; // Si existe, estamos editando
 	onClose: () => void;
 }
 
@@ -40,28 +40,30 @@ const CreateEditHelpArticle: React.FC<CreateEditArticleProps> = ({
 		try {
 			if (isEdit && article) {
 				await updateHelpArticle({
-					...article,
+					uuid: article.uuid,
 					title,
 					category,
 					content,
 				});
-				setMessage('Artículo actualizado correctamente ✅');
+				setMessage('Artículo actualizado correctamente');
 			} else {
 				await addHelpArticle({
 					title,
 					category,
 					content,
 				});
-				setMessage('Artículo creado correctamente ✅');
+				setMessage('Artículo creado correctamente');
 			}
+
 
 			// Cierra el modal después de un breve delay
 			setTimeout(() => {
 				onClose();
-			}, 800);
+				window.location.reload();
+			}, 500);
 		} catch (err) {
 			console.error(err);
-			setMessage('❌ Error al guardar el artículo.');
+			setMessage('Error al guardar el artículo.');
 		} finally {
 			setLoading(false);
 		}
@@ -131,36 +133,33 @@ const CreateEditHelpArticle: React.FC<CreateEditArticleProps> = ({
 						/>
 					</div>
 
-					{/* Botones */}
-					<div className="modal-action flex justify-between items-center">
-						{message && (
-							<p
-								className={`text-sm ${
-									message.includes('Error') ? 'text-error' : 'text-success font-semibold'
-								}`}
-							>
-								{message}
-							</p>
-						)}
-
-						<div className="flex gap-2">
-							<button type="button" className="btn" onClick={onClose}>
-								Cancelar
-							</button>
-							<button
-								type="submit"
-								className={`btn btn-primary ${loading ? 'btn-disabled' : ''}`}
-								disabled={loading}
-							>
-								{loading ? (
-									<span className="loading loading-spinner loading-sm" />
-								) : isEdit ? (
-									'Guardar cambios'
-								) : (
-									'Crear artículo'
-								)}
-							</button>
-						</div>
+					{message && (
+						<p
+							className={`text-sm ${
+								message.includes('Error') ? 'text-error' : 'text-success font-semibold text-right m-0'
+							}`}
+						>
+							{message}
+						</p>
+					)}
+					{/* Botón de enviar */}
+					<div className="modal-action flex justify-end m-0">
+						<button type="button" className="btn" onClick={onClose}>
+							Cancelar
+						</button>
+						<button
+							type="submit"
+							className={`btn btn-primary ${loading ? 'btn-disabled' : ''}`}
+							disabled={loading}
+						>
+							{loading ? (
+								<span className="loading loading-spinner loading-sm" />
+							) : isEdit ? (
+								'Guardar cambios'
+							) : (
+								'Crear artículo'
+							)}
+						</button>
 					</div>
 				</form>
 			</div>
