@@ -18,7 +18,7 @@ export interface UserProfile {
 	following: string[]; // TODO
 }
 
-interface User {
+export interface User {
 	uuid: string;
 	firstName: string;
 	lastName: string;
