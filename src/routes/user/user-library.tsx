@@ -13,9 +13,9 @@ const UserLibrary = () => {
 		<div className="flex flex-col gap-2">
 			<div className="flex justify-between">
 				<h1 className="text-3xl font-bold">Biblioteca</h1>
-				<button className="btn btn-primary">
+				{/*<button className="btn btn-primary">
 					<MdAdd /> Crear lista de reproducción
-				</button>
+				</button>*/}
 			</div>
 			<div className="tabs tabs-box">
 				<input
@@ -27,7 +27,7 @@ const UserLibrary = () => {
 					checked={currentTab === 'library'}
 					onChange={tabChange}
 				/>
-				<input
+				{/*<input
 					type="radio"
 					name="library-tab"
 					className="tab"
@@ -35,7 +35,7 @@ const UserLibrary = () => {
 					value="playlists"
 					checked={currentTab === 'playlists'}
 					onChange={tabChange}
-				/>
+				/>*/}
 			</div>
 			{currentTab === 'library' && <UserDigitalProducts />}
 		</div>
