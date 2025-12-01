@@ -35,6 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
 	const [loading, setLoading] = useState(true);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		supabase.auth.getSession().then(({ data: { session } }) => {
@@ -103,6 +104,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const signOut = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) throw error;
+		window.location.reload();
+		navigate('/');
 	};
 
 	const deleteAccount = async () => {

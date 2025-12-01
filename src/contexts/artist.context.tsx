@@ -2,7 +2,8 @@ import { createContext, type ReactNode, useContext } from 'react';
 import { useAuth } from './auth.context.tsx';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
-import type { Product } from './product.context.tsx';
+import type { Merch } from './merch.context.tsx';
+import type { User } from './user.context.tsx';
 
 export interface Artist {
 	uuid: string;
@@ -10,33 +11,93 @@ export interface Artist {
 	profileImg: string;
 	bannerImg: string;
 	biography: string;
-	followers: number;
+	followers: User[];
+}
+
+interface ArtistWalletWithdrawHistoryItem {
+	date: Date;
+	invoice: string;
+	amount: number;
+}
+
+export interface ArtistWallet {
+	balance: number;
+	iban: string;
+	withdrawHistory: ArtistWalletWithdrawHistoryItem[];
 }
 
 interface ArtistContextType {
+	getWallet: () => Promise<ArtistWallet>;
+	updateWallet: (wallet: Partial<ArtistWallet>) => Promise<void>;
+	withdrawWallet: () => Promise<void>;
 	getSongs: () => Promise<Song[]>;
 	getAlbums: () => Promise<Album[]>;
 	uploadSong: (data: Partial<Song>, cover: File, file: File) => Promise<void>;
+	updateSong: (data: Partial<Song>) => Promise<void>,
 	deleteSong: (uuid: string) => Promise<void>;
 	uploadAlbum: (data: Partial<Album>, cover: File) => Promise<void>;
+	updateAlbum: (data: Partial<Album>) => Promise<void>;
 	deleteAlbum: (uuid: string) => Promise<void>;
 	getArtistById: (uuid: string) => Promise<Artist>;
 	getArtistByTokenSession: () => Promise<Artist>;
 	getSongsByArtistId: (uuid: string) => Promise<Song[]>;
 	getAlbumsByArtistId: (uuid: string) => Promise<Album[]>;
-	getProductsByArtistId: (uuid: string) => Promise<Product[]>;
+	getProductsByArtistId: (uuid: string) => Promise<Merch[]>;
 	updateArtistProfile: (data: Partial<Artist>, profileImg: File, bannerImg: File) => Promise<Artist>;
 	followByArtistId: (uuid: string) => Promise<void>;
 	unfollowByArtistId: (uuid: string) => Promise<void>;
 	isFollowingByArtistId: (uuid: string) => Promise<boolean>;
+
+	getByUuid: (uuid: string) => Promise<Artist>;
+	getSongsByUuid: (uuid: string) => Promise<Song[]>;
+	getAlbumsByUuid: (uuid: string) => Promise<Album[]>;
+	getMerchByUuid: (uuid: string) => Promise<Merch[]>;
+	follow: (uuid: string) => Promise<void>;
+	unfollow: (uuid: string) => Promise<void>;
 }
 
 const ArtistContext = createContext<ArtistContextType | undefined>(undefined);
 
 export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 	const auth = useAuth();
+	let songs: Song[] | undefined = undefined;
+
+	const getWallet = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/payments/wallet`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+
+		return (await response.json()) as ArtistWallet;
+	}
+
+	const updateWallet = async (wallet: Partial<ArtistWallet>) => {
+		const response = await fetch(`${window.location.origin}/api/v1/payments/wallet`, {
+			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(wallet)
+		});
+		if (!response.ok) throw new Error();
+	}
+
+	const withdrawWallet = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/payments/wallet/withdraw`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+	}
 
 	const getSongs = async () => {
+		if (songs) return songs;
 		const response = await fetch(`${window.location.origin}/api/v1/songs`, {
 			method: 'GET',
 			headers: {
@@ -46,7 +107,8 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 
 		const body = await response.json();
-		return body as Song[];
+		songs = body as Song[];
+		return songs;
 	};
 
 	const getAlbums = async () => {
@@ -81,6 +143,20 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 	};
 
+	const updateSong = async (data: Partial<Song>) => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/songs/${data.uuid}`, {
+				method: 'PUT',
+				headers: {
+					Authorization: `Bearer ${auth.session?.access_token}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data),
+			}
+		)
+		if (!response.ok) throw new Error();
+	}
+
 	const deleteSong = async (uuid: string) => {
 		const response = await fetch(
 			`${window.location.origin}/api/v1/songs/${uuid}`,
@@ -110,6 +186,21 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		});
 		if (!response.ok) throw new Error();
 	};
+
+	const updateAlbum = async (data: Partial<Album>) => {
+		const response = await fetch(
+			`${window.location.origin}/api/v1/albums/${data.uuid}`,
+			{
+				method: 'PUT',
+				headers: {
+					Authorization: `Bearer ${auth.session?.access_token}`,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			},
+		)
+		if (!response.ok) throw new Error();
+	}
 
 	const deleteAlbum = async (uuid: string) => {
 		const response = await fetch(
@@ -206,7 +297,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 	};
 
 	// Función para obtener los productos de merchandising de un artista por su ID
-	const getProductsByArtistId = async (uuid: string): Promise<Product[]> => {
+	const getProductsByArtistId = async (uuid: string): Promise<Merch[]> => {
 		const response = await fetch(
 			`${window.location.origin}/api/v1/artists/${uuid}/products`,
 			{
@@ -222,7 +313,7 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 			throw new Error(body.message);
 		}
 
-		return (await response.json()) as Product[];
+		return (await response.json()) as Merch[];
 	};
 
 	// Función para modificar el perfil de un artista
@@ -310,14 +401,71 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 		return (await response.json()) as boolean;
 	};
 
+	const getByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Artist;
+	};
+
+	const getSongsByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/songs`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Song[];
+	}
+
+	const getAlbumsByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/albums`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Album[];
+	}
+
+	const getMerchByUuid = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/products`, {
+			method: 'GET'
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Merch[];
+	}
+
+	const follow = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/follow`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+	}
+
+	const unfollow = async (uuid: string) => {
+		const response = await fetch(`${window.location.origin}/api/v1/artists/${uuid}/unfollow`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`
+			}
+		});
+		if (!response.ok) throw new Error();
+	}
+
 	return (
 		<ArtistContext.Provider
 			value={{
+				getWallet,
+				updateWallet,
+				withdrawWallet,
 				getSongs,
 				getAlbums,
 				uploadSong,
+				updateSong,
 				deleteSong,
 				uploadAlbum,
+				updateAlbum,
 				deleteAlbum,
 				getArtistById,
 				getArtistByTokenSession,
@@ -328,6 +476,13 @@ export const ArtistProvider = ({ children }: { children: ReactNode }) => {
 				isFollowingByArtistId,
 				followByArtistId,
 				unfollowByArtistId,
+
+				getByUuid,
+				getSongsByUuid,
+				getAlbumsByUuid,
+				getMerchByUuid,
+				follow,
+				unfollow,
 			}}
 		>
 			{children}

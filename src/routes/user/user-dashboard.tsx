@@ -38,18 +38,18 @@ const MenuBar = () => {
 					Pedidos
 				</a>
 			</li>
-			<li>
+			{/*<li>
 				<a className="text-lg" onClick={() => navigate('/user/dashboard/stats')}>
 					<MdGraphicEq />
 					Estadísticas
 				</a>
-			</li>
-			<li>
+			</li>*/}
+			{/*<li>
 				<a className="text-lg" onClick={() => navigate('/user/dashboard/profile')}>
 					<MdPerson />
 					Perfil
 				</a>
-			</li>
+			</li>*/}
 			<li>
 				<a className="text-lg" onClick={() => navigate('/user/dashboard/settings')}>
 					<MdSettings />

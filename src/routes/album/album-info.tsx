@@ -4,6 +4,8 @@ import { type Album, useAlbum } from '../../contexts/album.context.tsx';
 import { MdFavorite, MdPlayArrow, MdStop } from 'react-icons/md';
 import AddToCart from '../../components/add-to-cart.component.tsx';
 import type { Song } from '../../contexts/song.context.tsx';
+import { useWishlist } from '../../contexts/wishlist.context.tsx';
+import { useToast } from '../../contexts/toast.context.tsx';
 
 const AlbumTrack = ({ song, order }: { song: Song; order: number }) => {
 	const navigate = useNavigate();
@@ -102,6 +104,8 @@ const AlbumInfo = () => {
 	const { uuid } = useParams();
 	const album = useAlbum();
 	const navigate = useNavigate();
+	const wishlist = useWishlist();
+	const toast = useToast();
 	const [albumInfo, setAlbumInfo] = useState<Album | undefined>(undefined);
 
 	useEffect(() => {
@@ -126,7 +130,9 @@ const AlbumInfo = () => {
 						<div className="grow flex flex-col justify-between">
 							<div className="flex flex-col gap-1">
 								<h1 className="text-2xl">{albumInfo.title}</h1>
-								<p>{albumInfo.author.artistName}</p>
+								<p className="cursor-pointer" onClick={() => navigate(`/profile/artist/${albumInfo?.author.uuid}`)}>
+									{albumInfo.author.artistName}
+								</p>
 								<div className="flex gap-2">
 									{albumInfo.genres.map((genre) => (
 										<span className="badge badge-primary">{genre.name}</span>
@@ -134,7 +140,13 @@ const AlbumInfo = () => {
 								</div>
 							</div>
 							<div className="flex gap-2">
-								<button className="btn btn-square btn-secondary">
+								<button
+									className="btn btn-square btn-secondary"
+									onClick={async () => {
+										await wishlist.add(albumInfo?.uuid, 'album');
+										toast.showToast('Añadido a la lista de deseados', 'success', 5000);
+									}}
+								>
 									<MdFavorite className="w-5 h-5" />
 								</button>
 							</div>

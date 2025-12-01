@@ -135,17 +135,17 @@ function SignUp() {
 							Registrarse
 						</button>
 
-						<div className="flex items-center gap-4 my-2">
+						{/*<div className="flex items-center gap-4 my-2">
 							<hr className="border-gray-300 flex-1" />
 							<span className="text-lg">o bien</span>
 							<hr className="border-gray-300 flex-1" />
-						</div>
+						</div>*/}
 					</form>
 
-					<button type="submit" className="btn btn-soft btn-primary">
+					{/*<button type="submit" className="btn btn-soft btn-primary">
 						<FaGoogle />
 						Registrarse con Google
-					</button>
+					</button>*/}
 
 					<hr className="border-gray-300 flex-1 my-5" />
 

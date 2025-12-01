@@ -10,10 +10,14 @@ import {
 	MdTrolley,
 } from 'react-icons/md';
 import { useEffect, useState } from 'react';
+import SongUpdate from './song-update.component.tsx';
+import { usePlayer } from '../../../contexts/player.context.tsx';
+import MerchUpload from './merch-upload.component.tsx';
 
 const SongReleaseItem = ({ song }: { song: Song }) => {
 	const navigate = useNavigate();
 	const artist = useArtist();
+	const player = usePlayer();
 
 	const del = async () => {
 		await artist.deleteSong(song.uuid);
@@ -34,10 +38,18 @@ const SongReleaseItem = ({ song }: { song: Song }) => {
 			<th>{new Date(song.releaseDate).toLocaleDateString()}</th>
 			<th>
 				<div className="flex gap-2 w-fit">
-					<button className="btn btn-primary btn-square">
+					<button
+						className="btn btn-primary btn-square"
+						onClick={() => player.playSong(song)}
+					>
 						<MdPlayArrow className="w-5 h-5" />
 					</button>
-					<button className="btn btn-accent btn-square">
+					<button
+						className="btn btn-accent btn-square"
+						onClick={() => {
+							(document.getElementById(`song-update-modal-${song.uuid}`) as any).showModal();
+						}}
+					>
 						<MdEdit className="w-5 h-5" />
 					</button>
 					<button
@@ -46,12 +58,20 @@ const SongReleaseItem = ({ song }: { song: Song }) => {
 					>
 						<MdStore className="w-5 h-5" />
 					</button>
-					<button className="btn btn-warning btn-square">
+					<button
+						className="btn btn-warning btn-square"
+						onClick={() => {
+							(document.getElementById(`merch-upload-modal-${song.uuid}`) as any).showModal();
+						}}
+					>
 						<MdTrolley className="w-5 h-5" />
 					</button>
 					<button className="btn btn-error btn-square" onClick={del}>
 						<MdDelete className="w-5 h-5" />
 					</button>
+
+					<SongUpdate song={song} />
+					<MerchUpload referenceType="song" reference={song} />
 				</div>
 			</th>
 		</tr>
@@ -71,7 +91,7 @@ const SongReleases = () => {
 		<table className="table">
 			<thead>
 				<tr>
-					<th></th>
+					<th>Carátula</th>
 					<th>Título</th>
 					<th>Duración</th>
 					<th>Fecha de publicación</th>

@@ -8,6 +8,7 @@ import {
 import { useAuth } from './auth.context';
 import type { Song } from './song.context.tsx';
 import type { Album } from './album.context.tsx';
+import type { Artist } from './artist.context.tsx';
 
 export interface UserProfile {
 	uuid: string;
@@ -17,7 +18,7 @@ export interface UserProfile {
 	following: string[]; // TODO
 }
 
-interface User {
+export interface User {
 	uuid: string;
 	firstName: string;
 	lastName: string;
@@ -52,9 +53,7 @@ interface UserContextType {
 	updateAddress: (address: Address) => Promise<Address>;
 	deleteAddress: (uuid: string) => Promise<void>;
 	getLibrary: () => Promise<LibraryItem[]>;
-
-	//updatePublicUser: (data: Partial<FullUser>) => Promise<void>;
-	//updatePassword: (data: string) => Promise<void>;
+	getFollowing: () => Promise<Artist[]>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -184,6 +183,17 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 		if (!response.ok) throw new Error();
 	};
 
+	const getFollowing = async () => {
+		const response = await fetch(`${window.location.origin}/api/v1/users/following`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${auth.session?.access_token}`,
+			}
+		});
+		if (!response.ok) throw new Error();
+		return (await response.json()) as Artist[];
+	}
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -196,6 +206,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 				updateAddress,
 				deleteAddress,
 				getLibrary,
+				getFollowing,
 			}}
 		>
 			{children}

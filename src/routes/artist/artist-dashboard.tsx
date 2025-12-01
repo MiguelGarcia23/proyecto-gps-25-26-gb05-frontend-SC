@@ -2,11 +2,8 @@ import { Outlet, useNavigate } from 'react-router';
 import {
 	MdDashboardCustomize,
 	MdGraphicEq,
-	MdNewReleases,
-	MdPayment,
 	MdPayments,
 	MdPerson,
-	MdReport,
 	MdSend,
 } from 'react-icons/md';
 

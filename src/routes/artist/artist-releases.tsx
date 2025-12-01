@@ -3,6 +3,7 @@ import AlbumReleases from './releases/album-releases.component.tsx';
 import SongReleases from './releases/song-releases.component.tsx';
 import SongUpload from './releases/song-upload.component.tsx';
 import AlbumUpload from './releases/album-upload.component.tsx';
+import MerchReleases from './releases/merch-releases.component.tsx';
 
 const ArtistReleases = () => {
 	const [currentTab, setCurrentTab] = useState<string>('songs');
@@ -65,6 +66,7 @@ const ArtistReleases = () => {
 			</div>
 			{currentTab === 'songs' && <SongReleases />}
 			{currentTab === 'albums' && <AlbumReleases />}
+			{currentTab === 'merch' && <MerchReleases />}
 			<SongUpload />
 			<AlbumUpload />
 		</div>

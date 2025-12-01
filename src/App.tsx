@@ -25,6 +25,18 @@ import { ArtistProvider } from './contexts/artist.context.tsx';
 import { HelpProvider } from './contexts/help.context.tsx';
 import Help from './routes/help/help.tsx';
 import UserWishlist from './routes/user/user-wishlist.tsx';
+import AdminDashboard from './routes/admin/admin-dashboard.tsx';
+import AdminGenres from './routes/admin/admin-genres.tsx';
+import ArtistPayments from './routes/artist/artist-payments.tsx';
+import ArtistStats from './routes/artist/artist-stats.tsx';
+import Dashboard from './routes/auth/dashboard.tsx';
+import MerchInfo from './routes/merch/merch-info.tsx';
+import AdminOrders from './routes/admin/admin-orders.tsx';
+import ArtistProfile from './routes/profile/artist/artist-profile.tsx';
+import ArtistEditProfile from './routes/artist/artist-edit-profile.tsx';
+import LibraryAlbum from './routes/user/library/library-album.tsx';
+import AdminHelp from './routes/admin/admin-help.tsx';
+import UserStats from './routes/user/user-stats.tsx';
 
 function App() {
 	return (
@@ -35,9 +47,14 @@ function App() {
 				<Route path="sign-up" element={<SignUp />} />
 				<Route path="sign-in" element={<SignIn />} />
 			</Route>
+			<Route path="dashboard" element={<Dashboard />} />
 
-			<Route path="admin">
-				<Route path="dashboard"></Route>
+			<Route path="admin" element={<RequiredRoleContainer roles={['admin']} />}>
+				<Route path="dashboard" element={<AdminDashboard />}>
+					<Route path="genres" element={<GenreProvider><AdminGenres /></GenreProvider>} />
+					<Route path="orders" element={<OrderProvider><AdminOrders /></OrderProvider>} />
+					<Route path="help" element={<HelpProvider><AdminHelp /></HelpProvider>} />
+				</Route>
 			</Route>
 
 			<Route path="" element={<NavBarContainer />}>
@@ -75,6 +92,15 @@ function App() {
 
 				<Route path="song/:uuid" element={<SongInfo />} />
 				<Route path="album/:uuid" element={<AlbumInfo />} />
+				<Route path="merch/:uuid" element={<MerchInfo />} />
+
+				<Route path="profile/artist/:uuid" element={
+					<ArtistProvider>
+						<RequiredRoleContainer roles={['user', 'artist', 'guest']} />
+					</ArtistProvider>
+				}>
+					<Route index element={<ArtistProfile />} />
+				</Route>
 
 				<Route
 					path="user"
@@ -84,6 +110,8 @@ function App() {
 						<Route path="for-you" />
 						<Route path="wishlist" element={<UserWishlist />} />
 						<Route path="library" element={<UserLibrary />} />
+						<Route path="library/album/:uuid" element={<LibraryAlbum />} />
+						<Route path="stats" element={<UserStats />} />
 						<Route
 							path="orders"
 							element={
@@ -119,9 +147,9 @@ function App() {
 								</GenreProvider>
 							}
 						/>
-						<Route path="payments" />
-						<Route path="stats" />
-						<Route path="profile" />
+						<Route path="payments" element={<ArtistPayments />} />
+						<Route path="stats" element={<ArtistStats />} />
+						<Route path="profile" element={<ArtistEditProfile />} />
 					</Route>
 				</Route>
 			</Route>
