@@ -4,14 +4,17 @@ import { useNavigate } from 'react-router';
 
 const CartItemCard = ({ item }: { item: CartItemPopulated }) => {
 	const cart = useCart();
-	const format =
-		item.format == 'cd'
-			? 'CD'
-			: item.format == 'vinyl'
-				? 'Vinilo'
-				: item.format === 'digital'
-					? 'Digital'
-					: 'Cassette';
+	let format ;
+
+	if (item.format == 'cd') {
+		format = 'CD';
+	} else if (item.format == 'vinyl') {
+		format = 'Vinilo';
+	} else if (item.format == 'digital') {
+		format = 'Digital';
+	} else {
+		format = 'Cassette';
+	}
 
 	return (
 		<div className="card bg-base-100 w-full shadow-sm flex-row">
