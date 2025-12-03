@@ -20,9 +20,8 @@ const UserDropdown = () => {
 
 	return (
 		<div className="dropdown dropdown-end">
-			<div
+			<button
 				tabIndex={0}
-				role="button"
 				className="btn btn-ghost btn-circle avatar mr-1.5"
 			>
 				<div className="w-10 rounded-full">
@@ -32,7 +31,7 @@ const UserDropdown = () => {
 						<div className="skeleton w-10 h-10" />
 					)}
 				</div>
-			</div>
+			</button>
 			<ul
 				tabIndex={-1}
 				className="menu menu-sm bg-base-100 dropdown-content rounded-box z-1 mt-2 p-2 shadow w-max"
