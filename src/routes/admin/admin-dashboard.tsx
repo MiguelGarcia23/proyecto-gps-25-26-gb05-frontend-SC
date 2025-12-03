@@ -9,34 +9,34 @@ const MenuBar = () => {
 	return (
 		<ul className="menu bg-base-200 rounded-box w-56 h-fit">
 			<li>
-				<a
+				<button
 					className="text-lg"
 					onClick={() => navigate('/admin/dashboard/genres')}
 				>
 					<MdMusicNote />
 					Géneros
-				</a>
+				</button>
 			</li>
 			<li>
-				<a
+				<button
 					className="text-lg"
 					onClick={() => navigate('/admin/dashboard/orders')}
 				>
 					<MdLocalShipping />
 					Pedidos
-				</a>
+				</button>
 			</li>
 			<li>
-				<a
+				<button
 					className="text-lg"
 					onClick={() => navigate('/admin/dashboard/help')}
 				>
 					<MdHelp />
 					Artículos de ayuda
-				</a>
+				</button>
 			</li>
 			<li>
-				<a
+				<button
 					className="text-lg"
 					onClick={async () => {
 						await auth.signOut();
@@ -45,7 +45,7 @@ const MenuBar = () => {
 				>
 					<MdLogout />
 					Cerrar sesión
-				</a>
+				</button>
 			</li>
 		</ul>
 	)
