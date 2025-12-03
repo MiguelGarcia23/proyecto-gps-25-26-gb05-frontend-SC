@@ -41,7 +41,7 @@ const Reviews: React.FC<ReviewsComponentProps> = ({ type, uuid }) => {
 			await addReview({
 				productType: type,
 				productId: uuid,
-				rating: parseInt(rating),
+				rating: Number.parseInt(rating),
 				title,
 				content,
 			});
